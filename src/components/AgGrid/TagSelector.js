@@ -1,0 +1,37 @@
+import React, { useState, forwardRef, useImperativeHandle } from "react";
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+export default forwardRef((props, ref) => {
+    const [value, setValue] = useState(props.name);
+    function onChangeHandler(e) {
+        console.log(e)
+        props.setDropdownState({[props.field]:e.target.value})
+        setValue(e.target.value);
+    }
+    useImperativeHandle(ref, () => {
+        return {
+            getValue: () => {
+                return value;
+            },
+            afterGuiAttached: () => {
+                setValue(props.value)
+            }
+        };
+    });
+    return (
+        <Select
+        style={{ width:'100%'}}
+          value={value}
+          onChange={onChangeHandler}
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+            {
+                props.options.map((option,index)=>(
+                    <MenuItem 
+                    value={option.id} key={index}>{option.name}</MenuItem>
+                ))
+            }
+        </Select>
+    )
+})
