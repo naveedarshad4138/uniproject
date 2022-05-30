@@ -132,14 +132,14 @@ const gridOptions = {
 
 
     const getRunningTotal = (params) => {
-        const { id, credit, debit,  } = params?.data;
+        const { id, credit_amount, debit_amount,  } = params?.data;
         let result;
         const filteredRow = rowData.filter((row) => row.estimate != true);
 
         filteredRow.map((row, index) => {
             if (row.id === id) {
                 if (index === 0) {
-                    result = credit - debit;
+                    result = credit_amount - debit_amount;
 
                 } else {
                     // first Running total
@@ -156,7 +156,7 @@ const gridOptions = {
                         (runningTotal) => runningTotal.innerHTML !== "Estimate"
                     );
                     const prevRunningTotal =
-                        index === 0 ? credit - debit : filteredRunningTotal[index - 1];
+                        index === 0 ? credit_amount - debit_amount : filteredRunningTotal[index - 1];
 
                     const prevTot = prevRunningTotal.innerHTML.replace(/[^0-9.-]+/g,"")
 
@@ -164,8 +164,8 @@ const gridOptions = {
 
                     const total =
                         Number(prevTot) +
-                        Number(params.data.credit) -
-                        Number(params.data.debit);
+                        Number(params.data.credit_amount) -
+                        Number(params.data.debit_amount);
                     result = total;
                 }
             }
@@ -210,8 +210,8 @@ const gridOptions = {
                     <AgGridColumn field="due_date" headerName="Due Date" flex={1} cellEditor="dateEditor" valueFormatter={dateFormatter}/>
                     <AgGridColumn field="entity_name" headerName="Entity Name" flex={1} />
                     <AgGridColumn field="bill_type" headerName="Type" flex={1} cellEditor="autoCompleteEditor" cellEditorParams={{options: BILL}}/>
-                    <AgGridColumn field="debit" headerName="Debit" flex={1} valueFormatter={currencyFormatter} />
-                    <AgGridColumn field="credit" headerName="Credit" flex={1} valueFormatter={currencyFormatter} />
+                    <AgGridColumn field="debit_amount" headerName="Debit" flex={1} valueFormatter={currencyFormatter} />
+                    <AgGridColumn field="credit_amount" headerName="Credit" flex={1} valueFormatter={currencyFormatter} />
                     <AgGridColumn headerName="Running total" field="running_total" flex={1} valueGetter={(params,rowData) => getRunningTotal(params,rowData)} valueFormatter={currencyFormatter}/>
                     <AgGridColumn
                         headerName="Paid"
@@ -226,5 +226,6 @@ const gridOptions = {
         </React.Fragment>
     );
 }
+
 
 export default BillsTabView;

@@ -113,21 +113,14 @@ body {
 .emailTemplateModal li {
     cursor: pointer;
 }
-.formButtons .theme-bg {
-        margin-right: 1rem;
-        color: #fff;
-        background: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)!important;
-   
-}
-.formButtons .active {
-    background: gray!important;
-}
 
-.emailTemplateModal .crossName{
-    color: red;
-}
-.formButtons .active1 {
+.formButtons .theme-bg {
     margin-right: 1rem;
     color: #fff;
-    background: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)!important;
+    /* background: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)!important; */
+    background: #A0A0A0 !important;
+
+}
+.formButtons .active {
+background: #04A9F5!important;
 }

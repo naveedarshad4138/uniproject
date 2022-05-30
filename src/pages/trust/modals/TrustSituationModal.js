@@ -191,7 +191,7 @@ const TrustSit = props => {
     return (
         <React.Fragment>
             <OverlayTrigger overlay={<Tooltip>Add tax funds to this Trust</Tooltip>}>
-                <Button className="shadow-1 theme-bg border border-0" size="lg" onClick={() => setIsLarge(true)}>
+                <Button className="shadow-1 theme-bg border border-0" size="md" onClick={() => setIsLarge(true)}>
                     Add a Row
                 </Button>
             </OverlayTrigger>

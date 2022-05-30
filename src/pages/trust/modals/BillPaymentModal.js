@@ -169,7 +169,7 @@ const BillPaymentModal = props => {
                                     prefix={'$'}
                                     decimalScale={2}
                                     // Name needs to be the field that is being updated
-                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='debit')}
+                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='debit_amount')}
                                     className="form-control"
                                     fixedDecimalScale={true}
                                 />

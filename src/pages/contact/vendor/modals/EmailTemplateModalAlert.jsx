@@ -25,7 +25,7 @@ export const EmailTemplateModalAlert = (props) => {
                                     style={{
                                         height: '3rem'
                                     }}
-                                    onClick={handleAddEmailTemplates}
+                                    onClick={()=>{handleAddEmailTemplates();onHide()}}
                                 >Save</Button>
                                 <button onClick={onHide} className="btn btn-ligth">Discard</button>
                             </Col>

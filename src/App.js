@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-
 import routes, { renderRoutes } from './routes';
 import { BASENAME } from './config/constant';
 import 'ag-grid-enterprise';

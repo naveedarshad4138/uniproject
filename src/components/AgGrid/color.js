@@ -3,8 +3,8 @@
 
 
   export const billColor = {
-              'theme-bg text-white': 'data.paid_bill === true && data.debit > 0',
-      'theme-bg2 text-white': 'data.paid_bill === false && data.debit > 0',
+              'theme-bg text-white': 'data.paid_bill === true && data.debit_amount > 0',
+      'theme-bg2 text-white': 'data.paid_bill === false && data.debit_amount > 0',
   }
 
   export const rtpColor = {

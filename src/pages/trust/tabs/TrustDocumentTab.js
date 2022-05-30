@@ -40,12 +40,11 @@ const TrustDocumentTab = props => {
          props.owner,
          'contact_id'
       );
-      console.log('a', data);
-      console.log('af', data1);
+
       setDocumentState([...data, ...data1]);
    };
 
-   const getOption = async () => {
+   const getOptions = async () => {
       const datas = await Documents.getOptions();
 
       const filtered = datas.filter(data => {
@@ -55,17 +54,19 @@ const TrustDocumentTab = props => {
    };
 
    useEffect(() => {
-      getOption();
+      getOptions();
       getDocuments(props.id);
-   }, [props.id]);
+   }, [props.toggle1]);
 
    const handleEdit = event => {
       console.log('Event', event);
       const { name, value } = event.target;
+      console.log('Event22', name, value);
       setUploadState({
          ...uploadState,
          [name]: value,
       });
+      console.log('Event11', uploadState);
    };
 
    const tokenConfig = {
@@ -84,6 +85,11 @@ const TrustDocumentTab = props => {
       // console.log("Update", uploadState)
       let data = uploadState;
       let formData = new FormData();
+      formData.append('trust_ids', props?.id);
+      // bodyFormData.append('contact_id', props.owner); this is the line that should work but props. owner is undefined and throws an error
+      const ownerId = parseInt(props.owner) ?? null;
+      (ownerId || ownerId === 0) &&
+         formData.append('investor_id', props?.owner);
       for (let key in data) {
          formData.append(key, data[key]);
       }
@@ -91,7 +97,7 @@ const TrustDocumentTab = props => {
       getDocuments(props.id);
    };
 
-   console.log('New image Created For', props.owner);
+   console.log('New image Created For', props?.owner,props?.id );
 
    const simpleCallBack = async file => {
       const bodyFormData = new FormData();
@@ -99,7 +105,7 @@ const TrustDocumentTab = props => {
       // bodyFormData.append('contact_id', props.owner); this is the line that should work but props. owner is undefined and throws an error
       const ownerId = parseInt(props.owner) ?? null;
       (ownerId || ownerId === 0) &&
-         bodyFormData.append('contact_id', props?.owner);
+         bodyFormData.append('investor_id', props?.owner);
       bodyFormData.append('file', file);
       const data = await Documents.uploadDocument(bodyFormData);
 
@@ -262,7 +268,7 @@ const TrustDocumentTab = props => {
                         <Form.Control
                            name="trust_ids"
                            validate
-                           readOnly //this is connected to backend url pls dont make editable 
+                           // readOnly //this is connected to backend url pls dont make editable
                            defaultValue={props?.id}
                            onChange={handleEdit}
                         />
@@ -276,7 +282,7 @@ const TrustDocumentTab = props => {
                         <Form.Control
                            name="contact_id"
                            validate
-                           readOnly //this is connected to backend url pls dont make editable
+                           // readOnly //this is connected to backend url pls dont make editable
                            defaultValue={props?.owner}
                            onChange={handleEdit}
                         />

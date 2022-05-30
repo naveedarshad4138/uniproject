@@ -5,6 +5,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-map
 import {GOOGLE_MAP_API_KEY} from '../../config/constant'
 import MarkerClusterer from "react-google-maps/lib/components/addons/MarkerClusterer";
 import { Typeahead } from 'react-bootstrap-typeahead';
+
 import {Trusts,Addresses,Contacts} from '../../services/'
 import { connect } from 'react-redux';
 import Autocomplete from "react-google-autocomplete";
@@ -169,6 +170,7 @@ const TrustMap=(props) =>{
        const addressForTrust=trustsData.reduce((results,trust)=>{
         const trustAddress= addressesData&&addressesData.find(address=>trust.address_id==address.id)
           if(trustAddress){
+            console.log(trustAddress)
            results.push({
              ...trust,
              latitude:trustAddress.latitude,
@@ -214,6 +216,7 @@ const TrustMap=(props) =>{
     console.log({place})
   }
 
+  console.log(addresses,addressForContactState)
   return <Map handleSearch={handleSearch} isSelected={isSelected} setIsOpenContact={setIsOpenContact} isOpenContact={isOpenContact} addressForContactState={addressForContactState} setIsOpen={setIsOpen} isOpen={isOpen} history={history} addresses={addresses} handlePlaceSelection={handlePlaceSelection} center={center} zoom={zoom}/>
 }
 

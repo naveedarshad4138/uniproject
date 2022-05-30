@@ -4,7 +4,7 @@ import React, { useState, forwardRef, useImperativeHandle } from "react";
 
 
 const getRunningTotal = (params) => {
-    const { id, credit, debit, estimate } = params?.data;
+    const { id, credit_amount, debit_amount, estimate } = params?.data;
     let result;
     if (estimate) {
       result = "Estimate";
@@ -16,7 +16,7 @@ const getRunningTotal = (params) => {
     filteredRow.map((row, index) => {
       if (row.id === id) {
         if (index === 0) {
-          result = credit - debit;
+          result = credit_amount - debit_amount;
         } else {
           // first Running total
           // Cal second running total
@@ -32,7 +32,7 @@ const getRunningTotal = (params) => {
             (runningTotal) => runningTotal.innerHTML !== "Estimate"
           );
           const prevRunningTotal =
-            index === 0 ? credit - debit : filteredRunningTotal[index - 1];
+            index === 0 ? credit_amount - debit_amount : filteredRunningTotal[index - 1];
 
           const prevTot = prevRunningTotal.innerHTML.replace(/[^0-9.-]+/g,"")
 
@@ -40,8 +40,8 @@ const getRunningTotal = (params) => {
 
           const total =
               Number(prevTot) +
-              Number(params.data.credit) -
-              Number(params.data.debit);
+              Number(params.data.credit_amount) -
+              Number(params.data.debit_amount);
           console.log("Prevtot",prevTot.replace(/[^0-9.-]+/g,""))
           result = total;
         }

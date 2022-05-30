@@ -185,7 +185,7 @@ const InsuranceTabView = props => {
     // console.log("The trust", trustState)
 
     const getRunningTotal = (params) => {
-        const { id, credit, debit, estimate } = params?.data;
+        const { id, credit_amount, debit_amount, estimate } = params?.data;
         let result;
         if (estimate) {
             result = "Estimate";
@@ -197,7 +197,7 @@ const InsuranceTabView = props => {
         filteredRow.map((row, index) => {
             if (row.id === id) {
                 if (index === 0) {
-                    result = credit - debit;
+                    result = credit_amount - debit_amount;
                 } else {
                     // first Running total
                     // Cal second running total
@@ -213,7 +213,7 @@ const InsuranceTabView = props => {
                         (runningTotal) => runningTotal.innerHTML !== "Estimate"
                     );
                     const prevRunningTotal =
-                        index === 0 ? credit - debit : filteredRunningTotal[index - 1];
+                        index === 0 ? credit_amount - debit_amount : filteredRunningTotal[index - 1];
 
                     const prevTot = prevRunningTotal.innerHTML.replace(/[^0-9.-]+/g,"")
 
@@ -221,8 +221,8 @@ const InsuranceTabView = props => {
 
                     const total =
                         Number(prevTot) +
-                        Number(params.data.credit) -
-                        Number(params.data.debit);
+                        Number(params.data.credit_amount) -
+                        Number(params.data.debit_amount);
                     console.log("Prevtot",prevTot.replace(/[^0-9.-]+/g,""))
                     result = total;
                 }
@@ -396,12 +396,15 @@ const InsuranceTabView = props => {
                     rowClassRules={billColor}
 
                     rowData={rowData}>
+                        
                     <AgGridColumn field="date_received" headerName="Date" flex={1} cellEditor="dateEditor" valueFormatter={dateFormatter} />
                     <AgGridColumn field="entity_name" headerName="Entity Name" flex={1} />
                     <AgGridColumn field="bill_type" headerName="Type" flex={1} cellEditor="autoCompleteEditor" cellEditorParams={{options: INSURANCE}}/>
-                    <AgGridColumn field="debit" headerName="Debit" flex={1} valueFormatter={currencyFormatter} />
-                    <AgGridColumn field="credit" headerName="Credit" flex={1} valueFormatter={currencyFormatter} />
+                    <AgGridColumn field="debit_amount" headerName="Debit" flex={1} valueFormatter={currencyFormatter} />
+                    <AgGridColumn field="credit_amount" headerName="Credit" flex={1} valueFormatter={currencyFormatter} />
+                    
                     <AgGridColumn headerName="Running total" field="running_total" flex={1} valueGetter={(params) => getRunningTotal(params)} valueFormatter={currencyFormatter}/>
+
                     <AgGridColumn field="estimate" hide={true} />
                     <AgGridColumn field="id" headerName="" suppressMenu={true} cellRenderer={'btnCellRenderer'} cellRendererParams={cellRendererParams} filter={false} flex={.5} />
                 </AgGridReact>
@@ -409,6 +412,5 @@ const InsuranceTabView = props => {
         </React.Fragment>
     );
 }
-
 
 export default InsuranceTabView

@@ -40,6 +40,19 @@ const classes = StyleSheet.create({
 export class CustomCard extends Component {
   
   render() {
+    // let noImage = NoImages
+    // the image needs to be refactored or it breaks the page
+    // let getPhoto = (data) => {
+    //   if (data !== null) {
+    //     let obj = Object(data[0])
+    //     console.log('obj', obj.photo)
+    //     return obj.photo
+    //   }
+    // }
+    // let photo = this.props.photos[0]
+    // console.log("photo", photo)
+    // console.log(this.props.photos)
+    // let image = getPhoto(this.props.photos) || noImage;
     let image =   this.props.image || NoImages;
     let name = this.props.name || this.props.title;
     let full_address = this.props.full_address || this.props.description;

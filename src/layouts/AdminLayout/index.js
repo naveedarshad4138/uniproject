@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useRef } from 'react';
-
 import Navigation from './Navigation';
 import NavBar from './NavBar';
 // import Breadcrumb from './Breadcrumb';
 // import Configuration from './Configuration';
-
 import useWindowSize from '../../hooks/useWindowSize';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import { ConfigContext } from '../../contexts/ConfigContext';

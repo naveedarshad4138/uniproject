@@ -3,10 +3,14 @@ import { Card, Col, Form, OverlayTrigger, Badge, Tooltip } from 'react-bootstrap
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+
 import moment from 'moment';
+
 import {orderBy} from 'lodash'
+
 import {Chatters} from '../../services';
 const Chatter = props => {
+
     dayjs.extend(relativeTime);
 
     const [chatterState, setChatterState] = useState([])

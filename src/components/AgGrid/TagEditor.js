@@ -4,6 +4,7 @@ export default forwardRef((props, ref) => {
 
     const [tags,setTags]=useState([])
     const [suggestions,setSuggestions]=useState([])
+    // const [options,setOptions]=useState( [{name: 'Option 1️⃣', id: 1},{name: 'Option 2️⃣', id: 2}])
     useEffect(()=>{
         if(!props.value || !props.suggestions) return
         setTags(props.suggestions.filter(i=>props.value.includes(i.id)))
@@ -33,7 +34,13 @@ setSuggestions(props.suggestions)
         }
     
     }
+// const onSelect=(selectedList, selectedItem)=>{
 
+//     }
+    
+//     const onRemove=(selectedList, removedItem) =>{
+     
+//     }
     return (
 <ReactTags
                 ref={ref}

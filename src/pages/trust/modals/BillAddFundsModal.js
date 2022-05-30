@@ -187,7 +187,7 @@ useEffect(() => {
                                     prefix={'$'}
                                     decimalScale={2}
                                     // Name needs to be the field that is being updated
-                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='credit')}
+                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='credit_amount')}
                                     className="form-control"
                                     fixedDecimalScale={true}
                                 />

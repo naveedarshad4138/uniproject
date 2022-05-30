@@ -111,7 +111,25 @@ useEffect(() => {
         setIsLarge(false);
     }
 
-    // console.log("The insurance state", insuranceState)
+    console.log("The insurance state", insuranceState)
+
+
+    // "currency_type": null,
+    // "bill_type": "County Tax Bill #1",
+    // "currency_choice": null,
+    // "bill_choice": "1",
+    // "line_choice": "tax",
+    // "move_type": null,
+    // "paid_bill": true,
+    // "date_received": "2022-03-15",
+    // "due_date": "2022-03-16",
+    // "debit_account": null,
+    // "credit_account": null,
+    // "credit_amount": null,
+    // "debit_amount": null,
+    // "transaction_number": null,
+    // "entity": null,
+    // "trust_id": null
 
     return (
         <React.Fragment>
@@ -186,7 +204,7 @@ useEffect(() => {
                                     prefix={'$'}
                                     decimalScale={2}
                                     // Name needs to be the field that is being updated
-                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='debit')}
+                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='debit_amount')}
                                     className="form-control"
                                     fixedDecimalScale={true}
                                 />

@@ -10,7 +10,6 @@ import CheckBoxEditor from './CheckBoxEditor'
 import BadgeDisplayRenderer from './BadgeDisplay'
 import TagDisplay from "./TagDisplay";
 import TagEditor from './TagEditor'
-import TagSelector from './TagSelector'
 
 const frameworkComponents = {
     btnCellRenderer: DeleteButton,
@@ -21,9 +20,7 @@ const frameworkComponents = {
     openCellRenderer: OpenCellRenderer,
     badgeDisplayRenderer:BadgeDisplayRenderer,
     tagDisplay:TagDisplay,
-    tagEditor:TagEditor,
-    tagSelector:TagSelector
-
+    tagEditor:TagEditor
 }
 
 const gridOptions = {

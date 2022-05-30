@@ -18,7 +18,6 @@ export const trustRtpUrl = "api/trust/trust-rtp/"
 export const trustTabUrl = "api/trust/trust-tabs/"
 export const trustImportUrl = "api/trust/trust-import/"
 
-
 //Address Endpoints
 export const addressUrl = "api/address/address/"
 
@@ -63,7 +62,6 @@ export const accountingUrl="/api/accounting/plaid-link-token/"
 export const accountingPublicApi="/api/accounting/plaid-access-token/"
 export const userUrls="/api/account/user/"
 export const employeesUrl="/api/account/employees/"
-//EmailTemplate End Points
 export const emailTemplateVariablesNameUrl="/api/templates/aviailable-fields/"
 export const emailTemplateUrl="/api/templates/template/"
-export const sendTemplateDataUrl = "api/templates/mass-instance/"
+export const sendTemplateDataUrl="/api/templates/mass-instance/"

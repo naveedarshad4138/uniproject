@@ -166,7 +166,7 @@ const App = props => {
 
     const valueGetterRepair = params => {
         const repair=params.context.repairState.filter(i=>i.id==params.data?.further_repair_stage_id)[0]
-        // console.log({repairState:params.context.repairState})
+        console.log({repairState:params.context.repairState})
         if(repair) return  repair.stage
         return repair?.stage
         // return params.data?.further_repair_stage_id
@@ -246,7 +246,6 @@ const   onSortChanged=(params)=> {
     setFilterConfi(filterModel)
     
   }
-  
 
   
     return (

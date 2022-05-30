@@ -30,39 +30,41 @@ const TrustTaskBoard = (props) => {
     const [owners,setOwners]=useState([])
 
     useEffect(()=>{
-        kanbanSetting();
-        getImages();
-        getStage();
-         getReqairStage();
-        return () => source.cancel();
+       (async()=>{
+       const data=await Users.getkanbanSettings()
+       data&&setKanbanSettings(data.kanban_settings)
+       })()
     },[])
-    //getKhanBaba Settings
-    const kanbanSetting = async()=>{
-        const data=await Users.getkanbanSettings()
-        data&&setKanbanSettings(data.kanban_settings)
-        }
-         
     
     const user=useSelector(state=>state.account.user.user)
     const history=useHistory()
-    //Get images 
-    const getImages=async()=>{
-        const data=await Images.getImages()
-        data&&setImageState(data.results)
-    }
-    const source=httpService.getSource()
-    //getStage
-    const getStage=async()=>{
-        const data=await Trusts.getSetups(source)
-        data&&setSetups(data)
-    }
-    //getRepairStage
-    const getReqairStage=async()=>{
-        const data=await  Trusts.getRepairStages(source)
-        data&&setRepairStage(data)
-    }
+    useEffect(()=>{
+        const getImages=async()=>{
+            const data=await Images.getImages()
+            data&&setImageState(data.results)
+        }
+        getImages()
+        
+    },[])
+    useEffect(()=>{
+        const source=httpService.getSource()
+        const getStage=async()=>{
+            const data=await Trusts.getSetups(source)
+            data&&setSetups(data)
+        }
+        getStage()
+        return () => source.cancel();
+    },[])
 
-
+    useEffect(()=>{
+        const source=httpService.getSource()
+        const getReqairStage=async()=>{
+            const data=await  Trusts.getRepairStages(source)
+            data&&setRepairStage(data)
+        }
+        getReqairStage()
+        return () => source.cancel();
+    },[])
 
 
     const getImage=(id)=>{
@@ -180,7 +182,7 @@ const TrustTaskBoard = (props) => {
         data&&setTrustsData(data)
         const newGrouped=await groupByData(data,source)
         newGrouped&&setBoard({lanes: newGrouped})
-
+        console.log('lanes data',newGrouped)
         }
        }
       getTrust()

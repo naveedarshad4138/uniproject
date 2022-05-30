@@ -2,11 +2,12 @@ import React,{useEffect} from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector,connect } from 'react-redux';
 import {getContacts,getTrusts,getAddresses,getInvestors,getFamilyLeads,getInvestorLeads,getFamilies,getSituations} from '../../store/action_calls'
+// import Login from '../../views/auth/signin/SignIn'
 import httpService from '../../services/httpService';
 const AuthGuard = (props) => {
    const account = useSelector(state => state.account);
    const { isLoggedIn,user } = account;
-   // console.log( { isLoggedIn,user })
+   console.log( { isLoggedIn,user })
    useEffect(()=>{
       httpService.setTokenToAxios(user?.access_token)
    },[user?.access_token])

@@ -105,11 +105,6 @@ const TrustSituationDetails = props => {
         });
     };
 
-    useEffect(() => {
-        console.log("ss",situationsState)
-    }, [situationsState])
-    
-
     //tags
 
     const [tags, setTags] = useState([])

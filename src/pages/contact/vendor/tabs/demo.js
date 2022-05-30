@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, } from 'react';
-import { Button, Card, Form, } from 'react-bootstrap';
+import {Button, Card, Form,} from 'react-bootstrap';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 
 // Import AG Grid
@@ -14,22 +14,21 @@ import { EmailTemplateModal } from './modals/EmailTemplateModal';
 // Redux
 import { useDispatch } from 'react-redux';
 
-import { billColor } from "../../../components/AgGrid/color";
+import {billColor} from "../../../components/AgGrid/color";
 
 import { useHistory } from 'react-router-dom';
 
-import { Contacts } from '../../../services'
+import {Contacts} from '../../../services'
 import { connect } from 'react-redux';
 import CreateContact from '../CreateContact'
 import httpService from '../../../services/httpService';
 import { updateContactList } from '../../../store/action_calls';
-import { cloneDeep } from 'lodash'
+import {cloneDeep} from 'lodash'
 import ImportDragAndDrop from './ImportDragAndDrop';
 import { useLocalStorage } from '../../../utils/useLocalStorage';
 import emailServices from '../../../services/emailServices'
 const App = props => {
-    let [rowSelectedData, setRowSelectedData] = useState(null);
-    const history = useHistory()
+    const history=useHistory()
     const [rowData, setRowData] = useState([]);
     const [contactSate, setContactState] = useState([]);
     const [overlay, setOverlay] = useState(false);
@@ -40,26 +39,26 @@ const App = props => {
     const [columnApi, setColumnApi] = useState(null);
 
 
-    const dispatch = useDispatch()
+     const dispatch=useDispatch()
 
     // Enpoint Calls for making edited dat push to the backend and update the data
-    const handleUpdate = async (body) => {
+    const handleUpdate = async(body) => {
         console.log("Update", body.data.id, "Field:", body.colDef.field, "New Value:", body.newValue)
         const id = body.data.id
         const obj = {};
-        if (body.colDef.field == "full_name") {
-            const fullName = body.newValue
-            obj['first_name'] = fullName.split(' ')[0]
-            if (fullName.split(' ').length > 1) obj['last_name'] = fullName.split(' ')[1]
+        if(body.colDef.field=="full_name"){
+            const fullName=body.newValue
+            obj['first_name']=fullName.split(' ')[0]
+            if(fullName.split(' ').length>1) obj['last_name']=fullName.split(' ')[1]
         }
-        else {
+        else{
             obj[body.colDef.field] = body.newValue
         }
         console.log(obj, 'object for upload')
-        let data = await Contacts.updateContact(id, obj)
-        data && dispatch(updateContactList(data))
+       let data= await Contacts.updateContact(id,obj)
+       data&&dispatch(updateContactList(data))
 
-        console.log('updated value', data)
+       console.log('updated value',data)
     }
 
     // these are the AG grid Col Parameters
@@ -75,7 +74,7 @@ const App = props => {
 
     const cellRendererParams = {
         clicked: function (id) {
-            history.push(`${id}`, { from: '/contact/list' });
+           history.push(`${id}`,{from:'/contact/list'});
         },
     }
 
@@ -85,119 +84,120 @@ const App = props => {
         setColumnApi(params.columnApi);
     };
     //quickfilter!
-    const [quickfilter, setQuickfilter] = useLocalStorage('contact_list_filter_text', '')
-    useEffect(() => {
-        if (gridApi) {
+    const [quickfilter,setQuickfilter]=useLocalStorage('contact_list_filter_text','')
+    useEffect(()=>{
+        if(gridApi){
             gridApi.setQuickFilter(quickfilter.trim());
         }
-    }, [quickfilter, gridApi])
+    },[quickfilter,gridApi])
 
     function onFilterTextBoxChanged() {
-        const textSearch = document.getElementById('filter-text-box').value
+        const textSearch=document.getElementById('filter-text-box').value
         setQuickfilter(textSearch)
     }
 
-    const [sortConfig, setSortConfi] = useLocalStorage('contact_list_order', [])
-    const [filterConfig, setFilterConfi] = useLocalStorage('contact_list_filter', [])
+        const [sortConfig,setSortConfi]=useLocalStorage('contact_list_order',[])
+        const [filterConfig,setFilterConfi]=useLocalStorage('contact_list_filter',[])
 
-    const onSortChanged = (params) => {
+        const   onSortChanged=(params)=> {
         let sortModel = params.api.getSortModel();
         setSortConfi(sortModel)
-    }
-    const onFirstDataRendered = (params) => {
+        }
+        const  onFirstDataRendered=(params) =>{
         let sortModel = sortConfig;
         if (sortModel) {
             gridApi?.setSortModel(sortModel);
         }
-        let filterModel = filterConfig
-        if (filterModel) {
+        let filterModel=filterConfig
+        if(filterModel){
             gridApi?.setFilterModel(filterModel)
         }
-    }
-
-
-    const onFilterChanged = (params) => {
-        let filterModel = params.api.getFilterModel();
-        setFilterConfi(filterModel)
-
-    }
-    const endTrustIndex = useRef(0)
-
-    useEffect(() => {
-        if (!gridRef) return
-        const allContactList = cloneDeep(Object.values(props.contactList))
-        if (allContactList.length == 0) return
-        if (rowData?.length == 0) {
-            setRowData(allContactList)
-            endTrustIndex.current = allContactList.length
         }
-        else if (endTrustIndex.current != allContactList.length) {
-            gridRef.current?.api?.addItems(allContactList.slice(endTrustIndex.current, allContactList.length))
-            endTrustIndex.current = allContactList.length
+
+
+        const onFilterChanged=(params)=>{
+            let filterModel = params.api.getFilterModel();
+            setFilterConfi(filterModel)
+            
         }
-    }, [props.contactList, gridRef]);
+        const endTrustIndex=useRef(0)
 
-    // useEffect(() => {
-    //     setRowData(cloneDeep(Object.values(props.contactList)))
-    //     },
-    //     [props.contactList]);
-
-    useEffect(() => {
-        var dragTimer;
-        document.addEventListener('dragover', function (e) {
-            var dt = e.dataTransfer;
-            if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
-                //     $("#dropzone").show();
-                //    console.log('dragged')
-                //    document.querySelector('.CSVImporter_FileSelector').style.display='unset !important'
-                setOverlay(true)
-                window.clearTimeout(dragTimer);
+        useEffect(() => {
+            if(!gridRef) return
+              const allContactList=cloneDeep(Object.values(props.contactList))
+              if(allContactList.length==0) return
+               if(rowData?.length==0) {
+                   setRowData(allContactList)
+                   endTrustIndex.current=allContactList.length
             }
+               else if(endTrustIndex.current!=allContactList.length) {
+                   gridRef.current?.api?.addItems(allContactList.slice(endTrustIndex.current,allContactList.length))
+                   endTrustIndex.current=allContactList.length
+               }
+            },[props.contactList,gridRef]);
+
+        // useEffect(() => {
+        //     setRowData(cloneDeep(Object.values(props.contactList)))
+        //     },
+        //     [props.contactList]);
+
+            useEffect(()=>{
+                var dragTimer;
+        document.addEventListener('dragover', function(e) {
+          var dt = e.dataTransfer;
+          if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+        //     $("#dropzone").show();
+        //    console.log('dragged')
+        //    document.querySelector('.CSVImporter_FileSelector').style.display='unset !important'
+        setOverlay(true)
+            window.clearTimeout(dragTimer);
+          }
         });
-        document.addEventListener('drop', function (e) {
+        document.addEventListener('drop', function(e) {
             // setOndrop(true)
             var dt = e.dataTransfer;
             if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
                 // console.log(e.dataTransfer.files[0])
-                if (!document.qemailuerySelector('.CSVImporter_Importer input[type="file"]')) return
+                if(!document.qemailuerySelector('.CSVImporter_Importer input[type="file"]')) return
                 // document.querySelector('.CSVImporter_Importer input[type="file"]').files = e.dataTransfer.files
                 console.log('drop')
-                //    setOverlay(false)
-                window.clearTimeout(dragTimer);
+            //    setOverlay(false)
+              window.clearTimeout(dragTimer);
             }
+          });
+        document.addEventListener('dragleave', function(e) {
+          dragTimer = window.setTimeout(function() {
+            // $("#dropzone").hide();
+            setOverlay(false)
+          }, 25);
         });
-        document.addEventListener('dragleave', function (e) {
-            dragTimer = window.setTimeout(function () {
-                // $("#dropzone").hide();
+            },[])
+        
+            const handleClickListner=()=>{
+                console.log('click listener')
                 setOverlay(false)
-            }, 25);
-        });
-    }, [])
-
-    const handleClickListner = () => {
-        console.log('click listener')
-        setOverlay(false)
-    }
-    useEffect(() => {
-        if (!document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]')) return
-        document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]').addEventListener('click', handleClickListner)
-        return () => {
-            document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]')?.removeEventListener('click', handleClickListner)
-        }
-    }, [document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]')])
-    //State for Email Modal Poup
+            }
+        useEffect(()=>{
+            if(!document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]')) return
+            document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]').addEventListener('click',handleClickListner)
+            return ()=>{
+                document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]')?.removeEventListener('click',handleClickListner)
+            }
+        },[document.querySelector('.CSVImporter_IconButton>span[data-type=arrowBack]')])
+ //State for Email Modal Poup
     const [modalShow, setModalShow] = useState(false);
     const [countRows, setCountRows] = useState("0");
     //Handle sendEmail button Click
-    const [emailTemplateVariablesNames, setEmailTemplateVariablesNames] = useState([]);
-    //    console.log(emailTemplateVariablesNames)
+   const [emailTemplateVariablesNames, setEmailTemplateVariablesNames] = useState([]);
+//    console.log(emailTemplateVariablesNames)
     const handleEmailModal = async () => {
         setModalShow(true);
-        const source = httpService.getSource()
-        const templateNames = await emailServices.getEmailtemplateVariablesNames(source)
-        const templateNamesVariablesData = await templateNames?.payload;
-        setEmailTemplateVariablesNames(templateNamesVariablesData)
+        const source=httpService.getSource()
+        const templateNames =  await  emailServices.getEmailtemplateVariablesNames(source)
+        const templateNamesVariablesData = await templateNames?.payload;      
+        setEmailTemplateVariablesNames (templateNamesVariablesData)
     }
+    let [rowSelectedData,setRowSelectedData]=useState(null);
     const onSelectionChanged = (event) => {
         var selectNodeChangeData = event.api.getSelectedNodes();
         var rowCount = selectNodeChangeData.length;
@@ -205,7 +205,8 @@ const App = props => {
         let selectedData = selectNodeChangeData.map(node => node.data.id);
         setRowSelectedData(selectedData)
     }
-
+    
+    //getTemplateNames
     const [getTemplateData, setTemplateData] = useState([]);
     const getTemplateName = async () => {
         const source = httpService.getSource();
@@ -217,27 +218,29 @@ const App = props => {
         getTemplateName()
     }, []);
 
+
     return (
-        <Card style={{ height: "100%" }}>
-            {
-                overlay && <div
-                    style={{
-                        height: "100vh",
-                        width: '100vw',
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        backgroundColor: 'gray',
-                        zIndex: 1000,
-                        color: 'white',
-                        overflow: 'hidden',
-                    }}
-                    className="overlay-drag-and-drop"
-                >
-                    <ImportDragAndDrop handleClickListner={handleClickListner} />
-                    <br />
-                    <p>Drop File Here</p>
-                </div>}
+        <Card  style={{ height: "100%" }}>
+
+{
+                overlay&&<div
+            style={{
+                height:"100vh",
+                width:'100vw',
+                position:'fixed',
+                top:0,
+                left:0,
+                backgroundColor:'gray',
+                zIndex:1000,
+                color:'white',
+                overflow:'hidden',
+            }}
+            className="overlay-drag-and-drop"
+            >
+          <ImportDragAndDrop handleClickListner={handleClickListner} />
+            <br />
+            <p>Drop File Here</p>
+            </div>}
 
             <Card.Body>
                 <div className="ag-theme-alpine" style={{ height: "100%" }}>
@@ -249,20 +252,20 @@ const App = props => {
                                 history.push('/contact');
                             }}>
                         Create </Button> */}
-                    <div style={{ display: 'flex', position: 'relative' }}>
+                         <div style={{display:'flex',position:'relative'}}>
                         <CreateContact />
                         <Button className="shadow-1 theme-bg border border-0"
                             onClick={(e) => {
-                                if (!document.querySelector('.CSVImporter_Importer input[type="file"]')) return
+                                if(!document.querySelector('.CSVImporter_Importer input[type="file"]')) return
                                 document.querySelector('.CSVImporter_Importer input[type="file"]').click()
                             }}
                             style={{
-                                height: '3rem'
-                            }}
-                        >
-                            Import </Button>
-                        <EmailTemplateModal show={modalShow} rowSelectedData={rowSelectedData} onHide={() => setModalShow(false)} countRows={countRows} getTemplateName={getTemplateName} getTemplateData={getTemplateData} emailTemplateVariablesNames={emailTemplateVariablesNames} />
-                        {/* //Send Email Button */}
+                              height:'3rem'
+                          }}
+                            >
+                        Import </Button> 
+                        <EmailTemplateModal show={modalShow} onHide={() => setModalShow(false)} countRows = {countRows} emailTemplateVariablesNames ={emailTemplateVariablesNames} getTemplateData={getTemplateData} rowSelectedData={rowSelectedData}/>
+                             {/* //Send Email Button */}
                         <Button className="shadow-1 theme-bg border border-0"
                             onClick={handleEmailModal}
                             style={{
@@ -271,16 +274,16 @@ const App = props => {
                         >
                             Send Email
                         </Button>
-                        <div className="form-inline float-right" style={{ position: 'absolute', right: 0 }}>
-                            <input type="text" className="form-control " id="filter-text-box"
-                                placeholder="Filter..." onInput={onFilterTextBoxChanged}
-                                value={quickfilter}
-                            />
+                        <div className="form-inline float-right"  style={{position:'absolute',right:0}}>
+                    <input type="text" className="form-control " id="filter-text-box"
+                           placeholder="Filter..." onInput={onFilterTextBoxChanged}
+                           value={quickfilter}
+                           />
                         </div>
                         <br />
-                    </div>
-                    <ImportDragAndDrop />
-                    {/*this is the actual input for the search text*/}
+                        </div>
+                        <ImportDragAndDrop />
+                    {/this is the actual input for the search text/}
                     <AgGridReact
                         onGridReady={handleGridReady}
                         defaultColDef={defaultColDef}
@@ -291,30 +294,31 @@ const App = props => {
                         gridOptions={gridOptions}
                         stopEditingWhenCellsLoseFocus={false}
                         rowClassRules={billColor}
-
                         onFilterChanged={onFilterChanged}
                         onSortChanged={onSortChanged}
                         onFirstDataRendered={onFirstDataRendered}
+                        // groupping
                         rowGroupPanelShow={'always'}
+                        // groupSelectsChildren={true}
+                        // onRowSelected={onRowSelected}
                         onSelectionChanged={onSelectionChanged}
-                        groupSelectsChildren={true}
                     >
 
                         <AgGridColumn headerName="Contact">
                             <AgGridColumn field="id" headerName="" suppressMenu={true} cellRenderer={'openCellRenderer'} cellRendererParams={cellRendererParams} editable={false} sort={false} filter={false} flex={.2} minWidth={80} />
                             <AgGridColumn field="full_name" headerName="Name" checkboxSelection={true} />
-                            <AgGridColumn field="company" headerName="Company" />
+                            <AgGridColumn field="company" headerName="Company"  />
                         </AgGridColumn>
                         <AgGridColumn headerName="Contact Info">
                             <AgGridColumn field="primary_email" headerName="Primary Email" />
-                            <AgGridColumn headerName="Primary Phone" field="text_phone" />
+                            <AgGridColumn headerName="Primary Phone" field="text_phone"  />
                         </AgGridColumn>
                         <AgGridColumn headerName="Address">
-                            <AgGridColumn field="full_address" headerName="Address" flex={1} columnGroupShow="closed" />
-                            <AgGridColumn field="street_1" headerName="Street" flex={1} columnGroupShow="open" />
-                            <AgGridColumn field="city" headerName="City" flex={1} columnGroupShow="open" />
-                            <AgGridColumn field="state" headerName="State" flex={1} columnGroupShow="open" />
-                            <AgGridColumn field="zipcode" headerName="Zip" flex={1} columnGroupShow="open" />
+                            <AgGridColumn field="full_address" headerName="Address"  flex={1}   columnGroupShow="closed" />
+                            <AgGridColumn field="street_1" headerName="Street"  flex={1} columnGroupShow="open"    />
+                            <AgGridColumn field="city" headerName="City"  flex={1} columnGroupShow="open"    />
+                            <AgGridColumn field="state" headerName="State"  flex={1} columnGroupShow="open"    />
+                            <AgGridColumn field="zipcode" headerName="Zip"  flex={1}  columnGroupShow="open"   />
                         </AgGridColumn>
                     </AgGridReact>
                 </div>

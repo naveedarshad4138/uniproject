@@ -116,7 +116,7 @@ const createContact = async(contact) => {
 
 const getOptions = async(source) => {
     try {
-        const {data}=await  http.options(`${apiEndpoint}`,{ cancelToken: source.token,...http.tokenConfig() })
+        const {data}=await http.options(`${apiEndpoint}`,{ cancelToken: source.token,...http.tokenConfig() })
         return data
       } catch (error) {
           console.log(error)

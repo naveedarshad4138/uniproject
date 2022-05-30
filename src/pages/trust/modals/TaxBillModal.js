@@ -97,6 +97,7 @@ const TaxBillModal = props => {
 
     // console.log("The tax state", taxState)
 
+
     return (
         <React.Fragment>
             <OverlayTrigger overlay={<Tooltip>Create Tax Bill for this Trust</Tooltip>} style={{ float: "right" }}>
@@ -178,7 +179,7 @@ const TaxBillModal = props => {
                                     prefix={'$'}
                                     decimalScale={2}
                                     // Name needs to be the field that is being updated
-                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='debit')}
+                                    onValueChange={(defaultValue, name) => handleValueChange(defaultValue, name='debit_amount')}
                                     className="form-control"
                                 />
                             </Col>

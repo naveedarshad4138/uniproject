@@ -17,7 +17,7 @@ const getDocumentsForContacts=async(id,name)=>{
 
 const getDocumentsForTrust=async(id)=>{
     try {
-        const {data}=await http.get(`${apiEndpoint}?trust_id=${id}`)
+        const {data}=await http.get(`${apiEndpoint}?trust_ids=${id}`)
         return data
     } catch (error) {
         console.log(error)

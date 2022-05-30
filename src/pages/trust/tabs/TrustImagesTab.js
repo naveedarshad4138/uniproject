@@ -70,26 +70,29 @@ const TrustImagesTab = props => {
    },[])
 const storeImageResults=(images)=>{
    const allImages=sortList(images)
-      setImageState([...imageSate,...allImages]);
-      console.log("naveed"+imageSate)
+   // setImageState([])
+   setImageState(images);
 }
    const getImages = async(id) => {
+      // storeImageResults([])
       const data=await Images.getImagesForTrust(id)
       const data1=await Images.getImagesForContact(props.owner)
       // const data2=await Images.getImages()
       if(!data && !data1) return
       // const combinedData=data.concat(data1,data)
+      const obj=[...data.results,...data1.results]
+      
       storeImageResults([...data.results,...data1.results])
             console.log("hooo",data1.results)
-            fetchNextData(data.next,storeImageResults)
+
+      fetchNextData(data.next,storeImageResults)
 
    };
 
    useEffect(() => {
          getImages(props.id);
          console.log("ssad",props.id)
-         console.log("images",imageSate)
-      },[props.id]);
+      },[props.id,props.toggle1]);
 
 
       

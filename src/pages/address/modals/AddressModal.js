@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 import {Addresses} from '../../../services'
 import { GOOGLE_MAP_API_KEY } from '../../../config/constant';
+
 import Autocomplete from "react-google-autocomplete";
 import httpService from '../../../services/httpService';
+
 import { useDispatch} from 'react-redux';
 import { updateAddressList } from '../../../store/action_calls';
+
 const AddressModal = props => {
     const [isLarge, setIsLarge] = useState(false);
     const [addressState, setaddressState] = useState({});

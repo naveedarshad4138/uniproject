@@ -129,14 +129,14 @@ const gridOptions = {
 
 
     const getRunningTotal = (params) => {
-        const { id, credit, debit,  } = params?.data;
+        const { id, credit_amount, debit_amount,  } = params?.data;
         let result;
         const filteredRow = rowData.filter((row) => row.estimate != true);
 
         filteredRow.map((row, index) => {
             if (row.id === id) {
                 if (index === 0) {
-                    result = credit - debit;
+                    result = credit_amount - debit_amount;
 
                 } else {
                     // first Running total
@@ -153,7 +153,7 @@ const gridOptions = {
                         (runningTotal) => runningTotal.innerHTML !== "Estimate"
                     );
                     const prevRunningTotal =
-                        index === 0 ? credit - debit : filteredRunningTotal[index - 1];
+                        index === 0 ? credit_amount - debit_amount : filteredRunningTotal[index - 1];
 
                     const prevTot = prevRunningTotal.innerHTML.replace(/[^0-9.-]+/g,"")
 
@@ -161,8 +161,8 @@ const gridOptions = {
 
                     const total =
                         Number(prevTot) +
-                        Number(params.data.credit) -
-                        Number(params.data.debit);
+                        Number(params.data.credit_amount) -
+                        Number(params.data.debit_amount);
                     result = total;
                 }
             }

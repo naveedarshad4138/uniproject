@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Col, Form,Modal, OverlayTrigger, Row,  Tooltip } from 'react-bootstrap';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
+
 // Import Endpoints
 import {
     AddressField,
@@ -108,16 +109,16 @@ useEffect(()=>{
 
 
 
-    const handleDates = (event, name) => {
-        // console.log("From date", moment(event._d).format("MM/DD/YYYY"))
-        // console.log("From name", name)
+    // const handleDates = (event, name) => {
+    //     // console.log("From date", moment(event._d).format("MM/DD/YYYY"))
+    //     // console.log("From name", name)
 
 
-        setContactState({
-            ...contactState,
-            [name]: moment(event._d).format("YYYY-MM-DD")
-        })
-    };
+    //     setContactState({
+    //         ...contactState,
+    //         [name]: moment(event._d).format("YYYY-MM-DD")
+    //     })
+    // };
 
     const handleEdit = (event) => {
         console.log("Event", event)

@@ -1,15 +1,13 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
 export default forwardRef((props, ref) => {
     const [value, setValue] = useState(props.name);
     function onChangeHandler(e) {
         props.setDropdownState({[props.field]:e.target.value})
         setValue(e.target.value);
     }
-
-
-
     useImperativeHandle(ref, () => {
         return {
             getValue: () => {

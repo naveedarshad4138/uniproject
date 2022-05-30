@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 
 const BadgeDisplayRenderer =(props)=> {
     const [total,setTotal]=useState(0)
-     const history=useHistory()
-     const totalSituationAssigned = localStorage.getItem('total-situation-assigned');
+     const history=useHistory();
+     const conditionForUseEffect = localStorage.getItem('total-situation-assigned');
     useEffect(()=>{
         const totalNumlocal=parseInt(localStorage.getItem('total-situation-assigned'))
        !isNaN(totalNumlocal)&&setTotal(totalNumlocal)
-    },[totalSituationAssigned])
+    },[conditionForUseEffect])
 
     return (
       <div style={{

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, isNumber} from "react";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { Card, Form, Col, Row, Table,} from "react-bootstrap";
 
@@ -133,7 +133,7 @@ function TaxTabView(props) {
 };
 
   const getRunningTotal = (params) => {
-    const { id, credit, debit, estimate } = params?.data;
+    const { id, credit_amount, debit_amount, estimate } = params?.data;
     let result;
     if (estimate) {
       result = "Estimate";
@@ -144,7 +144,7 @@ function TaxTabView(props) {
     filteredRow.map((row, index) => {
       if (row.id === id) {
         if (index === 0) {
-          result = credit - debit;
+          result = credit_amount - debit_amount;
         } else {
           // first Running total
           // Cal second running total
@@ -160,7 +160,7 @@ function TaxTabView(props) {
             (runningTotal) => runningTotal.innerHTML !== "Estimate"
           );
           const prevRunningTotal =
-            index === 0 ? credit - debit : filteredRunningTotal[index - 1];
+            index === 0 ? credit_amount - debit_amount : filteredRunningTotal[index - 1];
 
           const prevTot = prevRunningTotal.innerHTML.replace(/[^0-9.-]+/g, "")
 
@@ -168,9 +168,12 @@ function TaxTabView(props) {
 
           const total =
             Number(prevTot) +
-            Number(params.data.credit) -
-            Number(params.data.debit);
-          result = total;
+            Number(params.data.credit_amount) -
+            Number(params.data.debit_amount);
+          console.log("total",total)
+          result = total ;
+
+          console.log("total",total,prevTot,params,params.data.debit_amount, id, credit_amount, debit_amount, estimate )
         }
       }
     });
@@ -278,14 +281,16 @@ function TaxTabView(props) {
             headerName="Debit"
             flex={1}
             valueFormatter={currencyFormatter}
-            valueGetter={(params) => { return parseInt(params.data.debit)}}
+            valueGetter={(params) => { return parseInt(params.data.debit_amount??0)}}
           />
+
+
           <AgGridColumn
             field="credit"
             headerName="Credit"
             flex={1}
             valueFormatter={currencyFormatter}
-            valueGetter={(params) => { return parseInt(params.data.credit)}}
+            valueGetter={(params) => { return parseInt(params.data.credit_amount??0)}}
           />
           <AgGridColumn
             editable={false}

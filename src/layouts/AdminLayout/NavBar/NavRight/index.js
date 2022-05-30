@@ -6,6 +6,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import ChatList from './ChatList';
 import { LOGOUT } from './../../../../store/actions';
 import { ConfigContext } from '../../../../contexts/ConfigContext';
+
 import avatar1 from '../../../../assets/images/user/avatar-1.jpg';
 import avatar2 from '../../../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../../../assets/images/user/avatar-3.jpg';
@@ -13,6 +14,7 @@ import avatar4 from '../../../../assets/images/user/avatar-4.jpg';
 import Layout from "../../Configuration/Layout";
 
 const NavRight = () => {
+    // const account = useSelector((state) => state.account);
     const dispatcher = useDispatch();
     const configContext = useContext(ConfigContext);
     const { rtlLayout } = configContext.state;

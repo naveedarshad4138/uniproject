@@ -1,22 +1,16 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-
 export default forwardRef((props, ref) => {
     const [value, setValue] = useState({});
     const [inputValue, setInputValue] = useState('');
-
-
     function onChangeHandler(e, value) {
         props.setDropdownState({[props.field]:value.id})
         setValue(value);
     }
-
     function onInputChangeHandler(e, inputValue) {
         setInputValue(inputValue);
     }
-
     useImperativeHandle(ref, () => {
         return {
             getValue: () => {

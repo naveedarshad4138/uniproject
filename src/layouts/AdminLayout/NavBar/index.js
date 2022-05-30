@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 
 import NavLeft from './NavLeft';
 import NavRight from './NavRight';
+
 import { ConfigContext } from '../../../contexts/ConfigContext';
 import * as actionType from '../../../store/actions';
+
 const NavBar = () => {
+    //const [moreToggle, setMoreToggle] = useState(false);
     const configContext = useContext(ConfigContext);
     const { collapseMenu, headerBackColor, headerFixedLayout, layout, subLayout } = configContext.state;
     const { dispatch } = configContext;

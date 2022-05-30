@@ -132,6 +132,8 @@ const storeVendors=(vendors)=>{
       { id: 0, photo: NoImages, empty: true },
    ]);
    const [toggle, setToggle] = useState(0);
+   const [toggle1, setToggle1] = useState(0);
+
 
    const toggleHandler = () => {
     if(!defaultSwitch) setSelected(addressState.filter(address=>address.id==trustState.address_id))
@@ -192,6 +194,7 @@ const storeVendors=(vendors)=>{
 
    const onMarketingChange = () => {
       if (marketingState.length > 0) {
+
          var last = marketingState[0];
 
          if (last.on_market_date === null && last.off_market_date) {
@@ -217,6 +220,8 @@ const storeVendors=(vendors)=>{
    };
 
    const prevTrust = () => {
+        setToggle1(!toggle1)
+    
       let i = props.match.params.id;
       let id = i - 1;
       let newId=getPrevItem(id,props.trustList)
@@ -224,6 +229,9 @@ const storeVendors=(vendors)=>{
    };
 
    const nextTrust = () => {
+    
+
+        setToggle1(!toggle1)
       let i = props.match.params.id;
       let id = ++i;
       let newId=getNextItem(id,props.trustList)
@@ -390,13 +398,7 @@ useEffect(() => {
                                                 name="on_market"
                                                 checked={trustState.on_market}
                                                 onChange={(e) => {
-                                                   
-                                                  if (!trustState?.on_market){
-                                                      if(e?.target?.checked){
                                                           onMarketingChange()
-                                                      }
-                                                  }
-
                                                 setTrustState({
                                                     ...trustState,
                                                     on_market:e.target.checked,
@@ -849,6 +851,7 @@ useEffect(() => {
                         {/* Documents Tab */}
                         <Tab eventKey="documents" title="DOCUMENTS">
                      { Object.keys(trustState).length !== 0 && <TrustDocumentTab
+                              toggle1={toggle1}
                               trust={trustState}
                               id={props.match.params.id}
                               owner={`${trustState.owner_id}`}
@@ -862,10 +865,10 @@ useEffect(() => {
                         <Tab eventKey="images" title="IMAGES">
                            { Object.keys(trustState).length !== 0 && <TrustImagesTab
                               trust={trustState}
+                              toggle1={toggle1}
                               id={props.match.params.id}
                               owner={`${trustState.owner_id}`}
                               setOnMarketingPhotoChanges={setOnMarketingPhotoChanges}
-                              
                               // owner={trustState.owner_id ? trustState["owner_id"] : null }
                            />
                            }
