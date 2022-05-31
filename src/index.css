@@ -131,6 +131,10 @@ background: #04A9F5!important;
 }
 .subContactListColDetails .mx-0{
     margin-left: -40.9px!important;
+    width: auto;
+}
+.subContactListColDetails .ml-0{
+    margin-left: -43.1px!important;
 }
 .subContactListColDetails .col-sm-1{
     margin-left: -55px!important;
