@@ -124,3 +124,15 @@ body {
 .formButtons .active {
 background: #04A9F5!important;
 }
+/* //=>subContactFormCol SubContactList */
+
+.subContactListColDetails .form-control-plaintext {
+    margin-left: -1.8rem;
+}
+.subContactListColDetails .mx-0{
+    margin-left: -40.9px!important;
+}
+.subContactListColDetails .col-sm-1{
+    margin-left: -55px!important;
+}
+

@@ -6,6 +6,7 @@ import 'ag-grid-enterprise';
 import './assets/scss/partials/agGrid.scss';
 import { ConfigContext } from './contexts/ConfigContext';
 import { ErrorBoundary } from "react-error-boundary";
+import './index.css'
 
 const App = () => {
 
