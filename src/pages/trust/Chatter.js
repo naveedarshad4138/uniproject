@@ -139,7 +139,16 @@ const Chatter = props => {
 
 
     console.log("Chatter", postState)
-
+    //=>State for Email Modal Poup
+    const [modalShow, setModalShow] = useState(false);
+    const handleImagePreviewOnModal = () => {
+        setModalShow(true);
+        
+    }
+    const handleImagePreviewOFModal = () => {
+        setModalShow(false);
+        
+    }
     return (
         <Col md={12} lg={3} xl={3}>
             <Card>
@@ -218,25 +227,38 @@ const Chatter = props => {
                     <br />
                     {allState &&
                         <>
-                            
-                            
+
+
                             <ul className="task-list">
-                            
+
                                 {allState.map(data => (
                                     <li key={data.id}>
                                         {data.chatter_image.length > 0 || data.chatter_doc.length > 0 ?
+
                                        
-                            //             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            //     Open PDF
-                            // </button>
-                            <>
-                                            <a type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" href={data.chatter_image.length > 0 ? data.chatter_image[0].photo : data.chatter_doc[0].file} download>{data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}</a>
-                                            {/* //=>ImageOr Pdf PReView Modal */}
-                                            <ImagePreview 
-                                            imageOrPdfUrl = {`${data.chatter_image.length > 0 ? data.chatter_image[0].photo : data.chatter_doc[0].file}`} 
-                                            imageORFileName={`${data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}`}
-                                            imageORpdf={`${data.chatter_image.length > 0 ? true : false}`}
-                                            />
+                                            <>
+                                                <a type='button' className='text-primary' onClick={handleImagePreviewOnModal}>
+                                                    
+                                                        {data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}
+                                            
+                                                </a>
+                                                {/* <a type='button' href={data.chatter_image.length > 0 ? data.chatter_image[0].photo : data.chatter_doc[0].file} download onClick={handleImagePreviewOnModal}>
+                                                    
+                                                        {data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}
+                                                  
+
+
+                                                </a> */}
+                                                
+                                                {/* //=>ImageOr Pdf PReView Modal */}
+                                                <ImagePreview
+                                                    show={modalShow}
+                                                    onHide={() => setModalShow(false)}
+
+                                                    imageOrPdfUrl={`${data.chatter_image.length > 0 ? data.chatter_image[0].photo : data.chatter_doc[0].file}`}
+                                                    imageORFileName={`${data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}`}
+                                                    imageORpdf={`${data.chatter_image.length > 0 ? true : false}`}
+                                                />
                                             </>
                                             :
                                             <p>No Attachments!</p>

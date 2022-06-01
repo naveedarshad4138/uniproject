@@ -141,12 +141,11 @@ background: #04A9F5!important;
 }
 
 /* //=> imagePreviewORfilePrevie = src\pages\trust\modals\ImagePreview.js*/
-.imagePreviewORfilePreview body img{
+.imagePreviewORfilePreview  img{
     width: 30%!important;
     position: absolute!important;
     left: 32%!important;
     top: 6%!important;
-    height: 50%!important;
     
 
 }
