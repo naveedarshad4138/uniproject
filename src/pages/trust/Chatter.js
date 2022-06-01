@@ -13,6 +13,7 @@ import moment from 'moment';
 
 import { orderBy } from 'lodash'
 import { Chatters, Images, Documents } from '../../services';
+import { ImagePreview } from './modals/ImagePreview';
 
 const Chatter = props => {
 
@@ -20,8 +21,8 @@ const Chatter = props => {
     const [chatterState, setChatterState] = useState([])
     const [allState, setAllState] = useState([])
     const [postState, setPostState] = useState({})
-    const [toggle,settoggle] = useState(0)
-    const [docORimg, setdocORimg] = useState(["",""])
+    const [toggle, settoggle] = useState(0)
+    const [docORimg, setdocORimg] = useState(["", ""])
     const [filterBy, setFilterBy] = useState({
         notes: true,
         qual: false,
@@ -57,7 +58,7 @@ const Chatter = props => {
 
     useEffect(() => {
         getList(props.id)
-    }, [props.id,toggle])
+    }, [props.id, toggle])
 
 
     const uploadImage = async (formData) => {
@@ -106,29 +107,29 @@ const Chatter = props => {
     }
 
     // This is where it's all bundled and pushed.
-    const onSubmit = async() => {
+    const onSubmit = async () => {
         console.log("submit")
-        const dta=await postChatter(postState)
+        const dta = await postChatter(postState)
         console.log(dta)
-        if(docORimg[0]=="")return
-        if(docORimg[0]=="i"){
-            const data=docORimg[1]
+        if (docORimg[0] == "") return
+        if (docORimg[0] == "i") {
+            const data = docORimg[1]
             data.append('chatter_id', dta.id)
             await uploadImage(data)
             settoggle(!toggle)
             console.log("img")
-            setdocORimg(["",""])
+            setdocORimg(["", ""])
             return
         }
-            const data=docORimg[1]
-            data.append('chatter_id', dta.id)
-            await uploadDocument(docORimg[1])
-            settoggle(!toggle)
-            setdocORimg(["",""])
-            console.log("doc")
-        }
+        const data = docORimg[1]
+        data.append('chatter_id', dta.id)
+        await uploadDocument(docORimg[1])
+        settoggle(!toggle)
+        setdocORimg(["", ""])
+        console.log("doc")
+    }
 
-    
+
     //and the date is gotten here so it can be send with the request
     const getCurrentDateTime = () => {
         return {
@@ -194,13 +195,13 @@ const Chatter = props => {
                                         fd.append('photo', file)
                                         fd.append("contact_id", props.owner)
                                         // uploadImage(fd)
-                                        setdocORimg(["i",fd])
+                                        setdocORimg(["i", fd])
                                         console.log('image uploaded')
                                     } else {
                                         fd.append('file', file)
                                         fd.append("contact_id", props.owner)
                                         // uploadImage(fd)
-                                        setdocORimg(["d",fd])
+                                        setdocORimg(["d", fd])
                                         console.log('document uploaded')
                                     }
                                 }
@@ -217,11 +218,26 @@ const Chatter = props => {
                     <br />
                     {allState &&
                         <>
+                            
+                            
                             <ul className="task-list">
+                            
                                 {allState.map(data => (
                                     <li key={data.id}>
                                         {data.chatter_image.length > 0 || data.chatter_doc.length > 0 ?
-                                            <a href={data.chatter_image.length > 0 ? data.chatter_image[0].photo : data.chatter_doc[0].file} download>{data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}</a>
+                                       
+                            //             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            //     Open PDF
+                            // </button>
+                            <>
+                                            <a type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" href={data.chatter_image.length > 0 ? data.chatter_image[0].photo : data.chatter_doc[0].file} download>{data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}</a>
+                                            {/* //=>ImageOr Pdf PReView Modal */}
+                                            <ImagePreview 
+                                            imageOrPdfUrl = {`${data.chatter_image.length > 0 ? data.chatter_image[0].photo : data.chatter_doc[0].file}`} 
+                                            imageORFileName={`${data.chatter_image.length > 0 ? data.chatter_image[0].name : data.chatter_doc[0].name}`}
+                                            imageORpdf={`${data.chatter_image.length > 0 ? true : false}`}
+                                            />
+                                            </>
                                             :
                                             <p>No Attachments!</p>
                                         }

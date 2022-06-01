@@ -1,119 +1,134 @@
-import React, { useState, useEffect, useRef,useCallback } from 'react';
-import {Button, Card} from 'react-bootstrap';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Button, Card } from 'react-bootstrap';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
-import httpService from '../../services/httpService';
-import situationServices from '../../services/situationService';
-import {useHistory} from 'react-router-dom'
+
+import { useHistory } from 'react-router-dom'
 // Import AG Grid
 import 'ag-grid-enterprise';
 import dateFormatter from "../../components/AgGrid/dateFormatter";
 import currencyFormatter from "../../components/AgGrid/currencyFormatter";
 import gridOptions from "../../components/AgGrid/gridOptions";
 import { rtpColor } from "../../components/AgGrid/color";
-import TrustSit from './modals/TrustSituationModal';
-
+import { Select } from '@material-ui/core';
 import checkBoxRenderer from "../../components/AgGrid/checkBoxRenderer";
 
-import {Trusts,Investors,Situations} from '../../services';
+import { Trusts, Investors, Situations } from '../../services';
 
-import { getParsedListForTrust ,getInvestorsName} from '../../utils/parsedList';
-import {useSelector, connect,useDispatch } from 'react-redux';
+import { getParsedListForTrust, getInvestorsName } from '../../utils/parsedList';
+import { useSelector, connect, useDispatch } from 'react-redux';
 import { updateSituationList, updateTrustList } from '../../store/action_calls';
 import { fetchNextData } from '../../utils/recursiveCall';
 import { useLocalStorage } from '../../utils/useLocalStorage';
-import {cloneDeep} from 'lodash'
+import { cloneDeep } from 'lodash'
 
 const TrustRTP = props => {
-    const [toggle, setToggle] = useState(false)
-    const history= useHistory()
+    const history = useHistory()
     const user = useSelector(state => state.account.user.user);
     const [rowData, setRowData] = useState([]);
     const [investorsName, setInvestorsName] = useState([]);
     const [isInvestorsNameReady, setIsInvestorsNameReady] = useState(false);
     const gridRef = useRef(null);
-    const [dropdownState,setDropdownState]=useState({})
+    const [dropdownState, setDropdownState] = useState({})
     //this is regarding data uploading I will use this in the future, but this is where we set the grid to be able to show updates
     //API params!
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
+    const [toggle, setToggle] = useState(false)
+    const [setupStage, setSetupStage] = useState([])
 
-    const [setupStage,setSetupStage]=useState([])
-
-    const [situationOptions,setSituationOptions]=useState([])
-
-    useEffect(()=>{
-    const getOptions=async()=>{
-        const data=await Situations.getOptions()
-        data&&setSituationOptions(data)
-    }
-    getOptions()
-    },[])
+    const [situationOptions, setSituationOptions] = useState([])
 
     useEffect(() => {
-      if(situationOptions.length>0){
-        console.log("Data:",situationOptions)
-    }
+        const getOptions = async () => {
+            const data = await Situations.getOptions()
+            data && setSituationOptions(data)
+        }
+        getOptions()
+    }, [])
+
+    useEffect(() => {
+        console.log("he", situationOptions)
     }, [situationOptions])
 
-    const dispatch=useDispatch()
-const storeInvestorsResponse=(investors)=>{
-    setInvestorsName([investorsName,...getInvestorsName(investors)])
-}
-useEffect(()=>{
-  const getInvestors=async()=>{
-      const data=await Investors.getInvestors()
-      storeInvestorsResponse(data.results)
-      await fetchNextData(data.next,storeInvestorsResponse)
-      setIsInvestorsNameReady(prev=>!prev)
-
-  }
-  getInvestors()
-},[])
-
-     const endTrustIndex=useRef(0)
-     useEffect(() => {
-        if(!gridRef) return
-          const allSituationsList=cloneDeep(Object.values(props.situationsList))
-          if(allSituationsList.length==0) return
-           if(rowData?.length==0) {
-               setRowData(allSituationsList)
-               endTrustIndex.current=allSituationsList.length
+    useEffect(() => {
+        if (situationOptions.length > 0) {
+            console.log("Data:", situationOptions)
         }
-           else if(endTrustIndex.current!=allSituationsList.length) {
-               gridRef.current?.api?.addItems(allSituationsList.slice(endTrustIndex.current,allSituationsList.length))
-               endTrustIndex.current=allSituationsList.length
-           }
-        },[props.situationsList,gridRef]);
+    }, [situationOptions])
 
-     const updateRowData = useCallback((id,data) => {
+    const dispatch = useDispatch()
+    const storeInvestorsResponse = (investors) => {
+        setInvestorsName([investorsName, ...getInvestorsName(investors)])
+    }
+    useEffect(() => {
+        const getInvestors = async () => {
+            const data = await Investors.getInvestors()
+            storeInvestorsResponse(data.results)
+            await fetchNextData(data.next, storeInvestorsResponse)
+            setIsInvestorsNameReady(prev => !prev)
+
+        }
+        getInvestors()
+    }, [])
+
+
+
+
+    const endTrustIndex = useRef(0)
+    useEffect(() => {
+        if (!gridRef) return
+        const allSituationsList = cloneDeep(Object.values(props.situationsList))
+        if (allSituationsList.length == 0) return
+        if (rowData?.length == 0) {
+            setRowData(allSituationsList)
+            endTrustIndex.current = allSituationsList.length
+        }
+        else if (endTrustIndex.current != allSituationsList.length) {
+            gridRef.current?.api?.addItems(allSituationsList.slice(endTrustIndex.current, allSituationsList.length))
+            endTrustIndex.current = allSituationsList.length
+        }
+    }, [props.situationsList, gridRef]);
+
+    const updateRowData = useCallback((id, data) => {
         var rowNode = gridRef.current.api.getRowNode(id);
         rowNode.setData(data);
-      }, []);
+    }, []);
 
 
     // Enpoint Calls for making edited dat push to the backend and update the data
-    const handleUpdate = async(body) => {
+    const handleUpdate = async (body) => {
         // console.log("Update", body.data.id, "Field:", body.colDef.field, "New Value:", body.newValue)
         const id = body.data.id
         let obj = {};
-        obj[body.colDef.field] = body.newValue
-        console.log(Object.keys(dropdownState).length,'drd')
-        if(Object.keys(dropdownState).length!==0)
-        {
-            console.log(dropdownState,'drd')
-            obj=dropdownState
+        
+        const oldTags=body.data.tag_ids
+        console.log(oldTags,"ss")
+        if(body.colDef.field=="tag_ids"){
+            obj[body.colDef.field] = [body.newValue,oldTags]
+            // if(Array.isArray(oldTags)){
+            //     obj[body.colDef.field] = [body.newValue,...oldTags]
+            // }
+            // else{
+            //     obj[body.colDef.field] = [body.newValue,oldTags]
+            // }
         }
-        console.log("finalBody", 'ss')
-        const data = await Situations.updateSituation(id,)
-        try{
-            data && updateRowData(data.id, data)
-            data && dispatch(updateSituationList(data))
-            // data&&setRowData(prev=>prev.map(row=>row.id==data.id?data:row))
-            setDropdownState({})
+        // body.colDef.field == "tag_ids" ? obj[body.colDef.field] = [body.newValue] : obj[body.colDef.field] = body.newValue
+        // oldTags.length>0?obj[body.colDef.field] = [body.newValue, ...oldTags]:obj[body.colDef.field] = [body.newValue]
+        const finalBody={...body.data, ...obj}
+        console.log("ss", obj)
+        console.log("ss", body)
+
+        console.log(Object.keys(dropdownState).length, 'drd')
+        if (Object.keys(dropdownState).length !== 0) {
+            console.log(dropdownState, 'drd')
+            obj = dropdownState
         }
-        catch(err){
-            console.log(err)
-        }
+        console.log(finalBody, 'ss')
+        const data = await Situations.updateSituation(id, finalBody)
+        data && updateRowData(data.id, data)
+        data && dispatch(updateSituationList(data))
+        // data&&setRowData(prev=>prev.map(row=>row.id==data.id?data:row))
+        setDropdownState({})
     }
 
     // these are the AG grid Col Parameters
@@ -133,7 +148,7 @@ useEffect(()=>{
     }
 
     const badgeDisplayRenderer = {
-        currentUser: user.first_name +" "+ user.last_name
+        currentUser: user.first_name + " " + user.last_name
     }
 
 
@@ -143,152 +158,157 @@ useEffect(()=>{
         setGridApi(params.api);
         setColumnApi(params.columnApi);
     };
-    const [quickfilter,setQuickfilter]=useLocalStorage('trustsituation_list_filter_text','')
-    useEffect(()=>{
-        if(gridApi){
+    const [quickfilter, setQuickfilter] = useLocalStorage('trustsituation_list_filter_text', '')
+    useEffect(() => {
+        if (gridApi) {
             gridApi.setQuickFilter(quickfilter.trim());
         }
-    },[quickfilter,gridApi])
+    }, [quickfilter, gridApi])
     function onFilterTextBoxChanged() {
-        const textSearch=document.getElementById('filter-text-box').value
+        const textSearch = document.getElementById('filter-text-box').value
         setQuickfilter(textSearch)
     }
 
-    useEffect(()=>{
-        const getStages=async()=>{
-            const data=await Trusts.getSetups()
+    useEffect(() => {
+        const getStages = async () => {
+            const data = await Trusts.getSetups()
             setSetupStage(data)
         }
         getStages()
-    },[])
-
-    const refresh = async () => {
-        try {
-            const source = httpService.getSource();
-            const situationsData = await situationServices.getAllSituations(source)
-            console.log(situationsData)
-            setRowData(situationsData.results)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    }, [])
 
 
 
-    const handleNewSits = async(id) => {
+    const handleNewSits = async (id) => {
         // console.log("New Line Created For Trust Id", props.id)
         const obj = {};
         obj["trust_id"] = props.id
-        const data=await Situations.createSits(obj)
-       if(data) setRowData(prevState=>[data,...prevState])
+        const data = await Situations.createSits(obj)
+        if (data) setRowData(prevState => [data, ...prevState])
     }
 
 
     const valueGetterSituationType = params => {
-        const value=params.context.situationOptions.filter(options=>options.value==params.data?.situation_type)
-        if(value.length>0){
+        console.log("he called", situationOptions)
+        const value = situationOptions.filter(options => options.value == params.data?.situation_type)
+
+        if (value.length > 0) {
+
             return value[0].display_name
         }
-        return params.data?.situation_type
+
     };
 
     const valueSetterSituationType = params => {
         // setDropdownState({assigned_investor_id:params.newValue})
-        console.log("hello")
+        // console.log("hello")
         params.data.situation_type = params.newValue;
         return true;
     };
 
-    const  handleDeleteSituation=async(id)=>{
-        setRowData(prev=>prev.filter(i=>i.id!=id))
+    const handleDeleteSituation = async (id) => {
+        setRowData(prev => prev.filter(i => i.id != id))
         await Situations.handleDeleteSituation(id)
     }
 
-      const cellRendererParamsDelete = {
-          clicked: function (id) {
-           handleDeleteSituation(id)
-          },
-      }
-
-      const [sortConfig,setSortConfi]=useLocalStorage('trustsituation_list_order',[])
-      const [filterConfig,setFilterConfi]=useLocalStorage('trustsituation_list_filter',{"handled":{"filterType":"multi","filterModels":[null,{"values":["false"],"filterType":"set"}]}})
-
-const   onSortChanged=(params)=> {
-   let sortModel = params.api.getSortModel();
-   setSortConfi(sortModel)
- }
- const  onFirstDataRendered=(params) =>{
-   let sortModel = sortConfig;
-   if (sortModel) {
-     gridApi?.setSortModel(sortModel);
-   }
-   let filterModel=filterConfig
-   if(filterModel){
-       gridApi?.setFilterModel(filterModel)
-   }
- }
+    useEffect(() => {
+        console.log(rowData, "ROW")
+    }, [rowData])
 
 
- const onFilterChanged=(params)=>{
-    let filterModel = params.api.getFilterModel();
-    setFilterConfi(filterModel)
+    const cellRendererParamsDelete = {
+        clicked: function (id) {
+            handleDeleteSituation(id)
+        },
+    }
 
-  }
+    const selectEdit = () => {
+        return (
+            <Select
+                options={suggestionsAll}
+            >
+            </Select>
+        )
+    }
 
-  const getRowId = useCallback(function (params) {
-    return params.data.id;
-  }, []);
+    const [sortConfig, setSortConfi] = useLocalStorage('trustsituation_list_order', [])
+    const [filterConfig, setFilterConfi] = useLocalStorage('trustsituation_list_filter', { "handled": { "filterType": "multi", "filterModels": [null, { "values": ["false"], "filterType": "set" }] } })
 
-  const [suggestionsAll,setSuggestionsAll]=useState([])
+    const onSortChanged = (params) => {
+        let sortModel = params.api.getSortModel();
+        setSortConfi(sortModel)
+    }
+    const onFirstDataRendered = (params) => {
+        let sortModel = sortConfig;
+        if (sortModel) {
+            gridApi?.setSortModel(sortModel);
+        }
+        let filterModel = filterConfig
+        if (filterModel) {
+            gridApi?.setFilterModel(filterModel)
+        }
+    }
 
-useEffect(()=>{
-    (async()=>{
-    const data=await Situations.getSituationTags()
-    data&&setSuggestionsAll(data)
-    })()
-},[])
-const tagDisplay =(params)=>{
-    console.log({tagDisplay:params})
-    return {suggestions:params.context.suggestions}
-}
+
+    const onFilterChanged = (params) => {
+        let filterModel = params.api.getFilterModel();
+        setFilterConfi(filterModel)
+
+    }
+
+    const getRowId = useCallback(function (params) {
+        return params.data.id;
+    }, []);
+
+    const [suggestionsAll, setSuggestionsAll] = useState([])
+
+    useEffect(() => {
+        (async () => {
+            const data = await Situations.getSituationTags()
+            data && setSuggestionsAll(data)
+        })()
+    }, [])
+
+    useEffect(() => {
+        console.log(dropdownState, 'DD')
+    }, [dropdownState])
+
+
+    const tagDisplay = (params) => {
+        console.log("DD", params)
+        console.log({ tagDisplay: params })
+        return { suggestions: params.context.suggestions }
+    }
     return (
-        <Card  style={{ height: 910 }}>
+        <Card style={{ height: 910 }}>
             <Card.Body>
                 <div className="ag-theme-alpine" style={{ height: 800 }}>
                     {/*these Buttons do not do anything, it couple be a link to the create trust form */}
 
                     <Button className="shadow-1 theme-bg border border-0 "
-                            onClick={() => {
-                                gridApi.applyTransaction({ add:[{}]});
-                                handleNewSits()
-                            }}
-
+                        onClick={() => {
+                            gridApi.applyTransaction({ add: [{}] });
+                            handleNewSits()
+                        }}
                     >
                         Add </Button>
-                        <TrustSit
-                        id={props.id}
-                        toggle={toggle}
-                        setToggle={setToggle}
-                        refresh={refresh}
-                        
-                    />
                     {/*this is the actual input for the search text*/}
                     <div className="form-inline float-right" >
                         <input type="text" className="form-control " id="filter-text-box"
-                               placeholder="Filter..." onInput={onFilterTextBoxChanged}
-                               value={quickfilter}
+                            placeholder="Filter..." onInput={onFilterTextBoxChanged}
+                            value={quickfilter}
                         />
                     </div>
-                    {<AgGridReact
+                    {situationOptions.length > 0 && suggestionsAll.length > 0 && <AgGridReact
                         onGridReady={handleGridReady}
                         defaultColDef={defaultColDef}
                         ref={gridRef}
                         rowData={rowData}
                         context={{
-                            trustList:Object.values(props.trustList),
-                            investorList:Object.values(props.investorList),
-                            suggestions:suggestionsAll,
-                            situationOptions:situationOptions
+                            trustList: Object.values(props.trustList),
+                            investorList: Object.values(props.investorList),
+                            suggestions: suggestionsAll,
+                            situationOptions: situationOptions
                         }}
                         // Editing
                         onCellValueChanged={handleUpdate}
@@ -308,10 +328,10 @@ const tagDisplay =(params)=>{
                         onSortChanged={onSortChanged}
                         onFirstDataRendered={onFirstDataRendered}
                     >
-                      <AgGridColumn field="id"  headerName="" suppressMenu={true} cellRenderer={'agGroupCellRenderer'} cellRendererParams={{
-                          checkbox:true
-                      }} editable={false} sort={false} filter={false} flex={.2} minWidth={80} />
-                        <AgGridColumn field="id"  headerName="" suppressMenu={true} cellRenderer={'openCellRenderer'} cellRendererParams={cellRendererParams} editable={false} sort={false} filter={false} flex={.2} minWidth={80} />
+                        <AgGridColumn field="id" headerName="" suppressMenu={true} cellRenderer={'agGroupCellRenderer'} cellRendererParams={{
+                            checkbox: true
+                        }} editable={false} sort={false} filter={false} flex={.2} minWidth={80} />
+                        <AgGridColumn field="id" headerName="" suppressMenu={true} cellRenderer={'openCellRenderer'} cellRendererParams={cellRendererParams} editable={false} sort={false} filter={false} flex={.2} minWidth={80} />
                         <AgGridColumn headerName="Show Notes">
                             <AgGridColumn
                                 field="issue"
@@ -324,13 +344,12 @@ const tagDisplay =(params)=>{
                                 editable={true} />
                         </AgGridColumn>
                         <AgGridColumn headerName="Show Address" headerTooltip="Show Address">
-
                             <AgGridColumn
                                 field="trust_name"
                                 headerName="Trust"
                                 cellEditor="autoCompleteEditor"
-                                cellEditorParams={(params)=>{
-                                    return {name:'name',options:params.context.trustList ,setDropdownState , field:'trust_id'}
+                                cellEditorParams={(params) => {
+                                    return { name: 'name', options: params.context.trustList, setDropdownState, field: 'trust_id' }
                                 }}
                                 editable={true}
                                 flex={.5}
@@ -350,12 +369,11 @@ const tagDisplay =(params)=>{
                                 valueGetter={valueGetterSituationType}
                                 valueSetter={valueSetterSituationType}
                                 cellEditor="selectEditor"
-                                cellEditorParams={(params)=>({name:'display_name',
-                                    options:params.context.situationOptions
-                                    ,setDropdownState , field:'situation_type'
-
+                                cellEditorParams={(params) => ({
+                                    name: 'display_name',
+                                    options: params.context.situationOptions
+                                    , setDropdownState, field: 'situation_type'
                                 })
-
                                 }
                                 editable={true}
                                 headerTooltip="Situation Type"
@@ -371,8 +389,8 @@ const tagDisplay =(params)=>{
                                 headerName="Investor"
                                 columnGroupShow="open"
                                 cellEditor="autoCompleteEditor"
-                                cellEditorParams={(params)=>{
-                                    return  {name:'full_name',options:params.context.investorList ,setDropdownState , field:'investor_id'}
+                                cellEditorParams={(params) => {
+                                    return { name: 'full_name', options: params.context.investorList, setDropdownState, field: 'investor_id' }
                                 }
                                 }
                                 editable={true}
@@ -383,7 +401,7 @@ const tagDisplay =(params)=>{
                                 headerTooltip="Related Entity"
                                 columnGroupShow="open"
                                 cellEditor="autoCompleteEditor"
-                                cellEditorParams={{name:'full_name',options:Object.values(props.contactList) ,setDropdownState , field:'related_entity_id'}}
+                                cellEditorParams={{ name: 'full_name', options: Object.values(props.contactList), setDropdownState, field: 'related_entity_id' }}
                                 editable={true}
                             />
                         </AgGridColumn>
@@ -409,8 +427,8 @@ const tagDisplay =(params)=>{
                             cellRenderer={'badgeDisplayRenderer'}
                             cellRendererParams={badgeDisplayRenderer}
                             editable={false}
-                           maxWidth={150}
-                            />
+                            maxWidth={150}
+                        />
                         <AgGridColumn
                             headerTooltip="Last Completed"
                             field="last_completed_todo_date"
@@ -422,23 +440,44 @@ const tagDisplay =(params)=>{
                             flex={.4}
                             editable={false}
                         />
-                            <AgGridColumn
-                               field="tag_ids"
-                               headerName="Tags"
-                               headerTooltip="Tags"
+                        <AgGridColumn
+                            field="tag_ids"
+                            headerName="Tags"
+                            headerTooltip="Tags"
+                            cellRenderer={'tagDisplay'}
+                            cellRendererParams={tagDisplay}
+                            cellEditor="tagSelector"
+                            cellEditorParams={(params) => ({
+                                name: 'name',
+                                options: suggestionsAll
+                                , setDropdownState
+                                , field: 'tag_ids'
+                            })
+                            }
+                            columnGroupShow="open"
+
+                            editable={true}
+                            flex={.5}
+
+                        />
+
+                        {/* <AgGridColumn
+                            field="tag_ids"
+                            headerName="Tags"
+                            headerTooltip="Tags"
                             //    columnGroupShow="open"
-                               cellRenderer={'tagDisplay'}
-                               cellRendererParams={tagDisplay}
-                               cellEditor={"tagEditor"}
-                               cellEditorParams={(params)=>{
-                                return  {value:params.value,suggestions:params.context.suggestions}
+                            cellRenderer={'tagDisplay'}
+                            cellRendererParams={tagDisplay}
+                            cellEditor={"tagEditor"}
+                            cellEditorParams={(params) => {
+                                return { value: params.value, suggestions: params.context.suggestions }
                             }
                             }
                             //    cellEditor="tagDisplay"
                             //    cellEditorParams={{suggestions:suggestionsAll}}
                             editable={true}
                             flex={.5}
-                        />
+                        /> */}
 
                         <AgGridColumn
                             field="id"
@@ -449,7 +488,7 @@ const tagDisplay =(params)=>{
                             editable={false}
                             sort={false}
                             filter={false}
-                            flex={.2}/>
+                            flex={.2} />
                     </AgGridReact>
                     }
                 </div>
@@ -459,13 +498,12 @@ const tagDisplay =(params)=>{
 };
 
 
-
 const mapStateToProps = state => ({
     trustList: state.trustReducer.trustList,
-    addressList:state.addressReducer.addressList,
+    addressList: state.addressReducer.addressList,
     contactList: state.contactReducer.contactList,
-    investorList:state.investorReducer.investorList,
-    situationsList:state.situationsReducer.situationsList
+    investorList: state.investorReducer.investorList,
+    situationsList: state.situationsReducer.situationsList
 })
 
 export default connect(mapStateToProps, null)(TrustRTP)
