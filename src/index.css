@@ -1,151 +1,360 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 body {
-    overflow-x: hidden;
-}
-
-.email_textArea textarea {
-    padding-bottom: 4rem;
-}
-
-.email_textArea {
-    position: relative;
-}
-
-.select_template {
-    position: absolute;
-    bottom: 0.5rem;
-    left: 1rem;
-}
-
-/* // =>EmailTemplate Css */
-.emailTemplateModal {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    background: transparent;
-    border: 1px solid rgb(216, 214, 214);
+    /* background-color: #000; */
     color: #000;
+    font-family :"Poppins",sans-serif,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+html,body {
+    scroll-behavior: smooth;
+}
+.row {
+    --bs-gutter-x: 0rem!important;
+}
+.headerMainDiv {
+    margin: 28px auto;
+}
+.header .profileImg {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.header  .navbar-toggler {
+    box-shadow: 1px 1px 3px 1px #ffc800;
+    
+}
+.header  .navbar-toggler :focus {  
+    box-shadow: none;
+}
+.header .dropdownMenu2ul {
+    margin-left: -6rem;
+    padding: 2px;
+    background-color: #ffc800;
+    margin-top: 0.4;
 }
 
-.emailTemplateModal li {
-    position: relative;
+.header .dropdownMenu2ul {
+    min-width: 8rem!important;
+}
+.header button {
+    border: none;
+    background-color: transparent;
+    color: #ffc800;
+}
+.header .navbar-nav .nav-link {
+    color: #fff;
+    border-width: 10%;
 }
 
-.emailTemplateModal li a {
-    color: #000;
-    text-align: center;
-    text-decoration: none;
-    display: block;
+.header i,.header svg{
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #ffc800;
+    margin: -4px 4px 0 0;
+
+}
+.header .dropdown-item {
+    background-color: #000;
+    color: #fff;
     padding: 10px;
 }
-
-.overflowHidden {
-    height: 200px;
-    overflow: auto;
+.header .dropdown-item:hover, .dropdown-item:focus {
+    color: #ffc800;
+    background-color: #000;
+}
+.active{
+    color: #ffc800!important;
+    border-bottom: 1px solid #ffc800;
 }
 
-.emailTemplateModal li ul {
-    z-index: 1;
-    position: absolute;
-    top: 100%;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: none;
-    line-height: normal;
-    background: #fff;
+
+/* //=>MainOrderCard */
+.containerMain {
+    position: relative;
+}
+.mainContainer2 {
     width: 100%;
-    color: #000;
-}
-
-.emailTemplateModal li ul li a {
-    text-align: left;
-    color: #000;
-    font-size: 14px;
-    padding: 10px;
-    display: block;
-    white-space: nowrap;
-}
-
-/* .emailTemplateModal li ul li a:hover {
-    background-color: ba;
-    color: #000;
-} */
-
-.emailTemplateModal li ul li ul {
-    left: 100%;
+    height: 70vh;
+    position: absolute;
     top: 0;
+    opacity: 0.8;
+    background-color: #000;
 }
 
-.ello {
-    height: 200px;
-    overflow: auto;
-}
+.orderCard{
+    position: absolute;
+    top: 22%;
+    right: 8%;
+    font-size: 18px;
+    border-color: #ffc800;
 
-.ello::-webkit-scrollbar {
-    width: 12px;
-    /* width of the entire scrollbar */
 }
-
-.ello::-webkit-scrollbar-track {
-    padding: 1px;
-    background: white;
-    /* color of the tracking area */
+.containerMain img { 
+    width: 100%;
+    height: 70vh;
+    object-fit: cover;
+    
+  }
+.orderCard .card,.orderCard .card-header,.orderCard .card-body, .orderCard button {
+    color: #fff;
+    background-color: #000;
 }
-
-.ello::-webkit-scrollbar-thumb {
-    background-color: gray;
-    /* color of the scroll thumb */
-    border-radius: 20px;
-    /* roundness of the scroll thumb */
-    border: 1px solid black;
-    /* creates padding around scroll thumb */
+.orderCard .card-header  {
+    border-radius: 0!important;
 }
-
-/* .emailTemplateModal ul li:hover>a {
+.orderCard .card-header button {
+    padding: 8px 29px;
+    background: #4a4637;
+    color: #ffc800;
+    border: none;
+    border-radius: 25px;
+}
+.orderCard .card-header button svg{
     background-color: #fff;
-    color: #000 !important;
-} */
+    margin-left: 9px;
+    font-size: 24px;
+    padding: 3px;
+    border-radius: 50%;
 
-.emailTemplateModal li:hover>ul {
-    display: block;
+}
+.orderCard .button,.button {
+   background-color: #ffc800!important;
+   color: #fff;
+
 }
 
-.emailTemplateModal li {
+ .orderCard .card-body h1 span {
+    color: #ffc800;
+ }
+/* //////////////////////////=>AddNewItem///////////////////////////////// */
+.newItem {
+    border: 3px solid #ffc800;
+    padding: 3rem 3rem 1rem 3rem;
+    border-radius: 5px;
+    margin-top: 3%;
+}
+.newItem .dots {
+    margin: -2rem 0 2rem 0 ;
+}
+.newItem .dots div {
+    width: 12px;
+    height: 13px;
+    display: inline-table;
+    background-color: #ffc800;
+    margin: 5px;
+    border-radius: 50%;
+}
+
+.newItem input,.newItem .input-group-text,.form-select {
+    border: none;
+    border-bottom:1px solid #ffc800 ;
+  
+}
+.newItem .input-group-text {
+    color: #ffc800;
+    background-color: #000;
+}
+.newItem .form-control:focus, .newItem .form-select:focus, button:focus {
+    box-shadow: none!important;
+    border-color: #ffc800;
+}
+/* //=>Image Style */
+.newItem .imageBox {
+    height: 250px;
+    background-color: #fff;
+    border: 1px solid #ffc800;
+    border-radius: 4px;
+    
+}
+.newItem .imageBox .uploadImage {
+    top: 33%!important;
+    width: 100%;
+}
+.newItem .imageBox .imageAsset {
+    text-align: center;
+}
+.newItem .imageBox svg {
+    font-size: 42px;
+    color: gray;
+    margin: auto;
+    display: flex;   
+}
+.newItem .imageBox label {
+    cursor: pointer;
+}
+.imageAsset button {
+    top: 3%;
+    border-color: #ffc800;
+    right: 2%;
+    background: #fff;
+    color: #ffc800;
+    background-color: #000;
+    width: 34px;
+    border-radius: 50%;
+    height: 33px;
+    font-weight: 600;
+
+}
+/* //=> ShowFood  */
+.main_foodItemDiv{
+    position: relative;
+    color: #ffc800;
+}
+.main_foodItemDiv h3, .main_menu h3{ 
+    border-radius: 15px;
+    margin: 10% 0 5% 0;
+    text-decoration: underline;
+    text-underline-position: under;
+    text-decoration-thickness: 4px;
+    color: #ffc800;
+}
+.main_card {
+    position: relative;
+    width: 300px;
+    margin-top: 5px;
+    padding: 1rem;
+    margin-right: 2.1rem;
+    margin-bottom: 8px;
+    -webkit-box-shadow: -3px 2px 17px -6px #000000;
+    box-shadow: -3px 2px 17px -6px #000000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+.main_card:hover {
+    background-color: gainsboro;
+    transition-duration:  .5s ease-in
+}
+
+
+.main_card .picCard .itemPic {
+    position: relative;
+    width: 125px;
+    height: 125px;
+    top: -1rem;
+    left: -1rem;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.main_card .picCard .cartPic {
+    position: absolute;
+    right: 1rem;
+    top: 12%;
+    color: #ffc800;
+    font-size: 32px;
     cursor: pointer;
 }
 
-.formButtons .theme-bg {
-    margin-right: 1rem;
-    color: #fff;
-    /* background: linear-gradient(-135deg, #1de9b6 0%, #1dc4e9 100%)!important; */
-    background: #A0A0A0 !important;
-
+.main_card .main_card_body {
+    width: 50%;
+    position: absolute;
+    right: 0;
+    bottom: 1rem;
+    display: grid;
+    color: #000000;
 }
-.formButtons .active {
-background: #04A9F5!important;
+.react-multi-carousel-list button {
+    background-color: #ffc800;
+    border: none!important;
 }
-/* //=>subContactFormCol SubContactList */
-
-.subContactListColDetails .form-control-plaintext {
-    margin-left: -1.8rem;
+.carousel {
+    margin: 10px -20px;   
 }
-.subContactListColDetails .mx-0{
-    margin-left: -40.9px!important;
-    width: auto;
+/* //=> ///////////////// Menu Style //////////////// */
+.main_menu  ul li button {
+    text-transform: capitalize;
+    color: #000000;
+    margin: 8px;
+    border: 1px solid #ffc800!important;
+} 
+.main_menu  ul li button:hover { 
+    background-color: #000000;
+    color: #ffc800;
 }
-.subContactListColDetails .ml-0{
-    margin-left: -43.1px!important;
+.main_menu .active {
+    background-color: #000000!important;
+    color: #ffc800;
 }
-.subContactListColDetails .col-sm-1{
-    margin-left: -55px!important;
+/* //=> /////////////////////////////// CarItemModal ///////////////////////////// */
+/* .modal-dialog {
+    max-width: 90%!important;
+    margin: 3.6rem auto;
+} */
+.main_cartItemDiv {
+    display: flex;
+    border-bottom: 1px solid #ffc800;
+    padding-bottom: 1rem;
+    justify-content: space-between;
 }
-
-/* //=> imagePreviewORfilePrevie = src\pages\trust\modals\ImagePreview.js*/
-.imagePreviewORfilePreview  img{
-    width: 30%!important;
-    position: absolute!important;
-    left: 32%!important;
-    top: 6%!important;
+.main_cartItemDiv h2{
+    color: #ffc800;
+    align-self: center;
+    /* float: left; */
+    flex: 5;
+    text-align: center;
     
+}
+.main_cartItemDiv button{
+    flex: 1;
+width: 10%;
+margin: 16px 0;
+}
+/* ////////////Cart body///////////////////// */
+.table-bordered {
+    border-color: #ffc800;
+}
+.tbl-container {
+    border: 1px solid #ffc800;
+    
+  }   
+  .bdr {
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .table-bordered {
+    border-color: #ffc800;
+  }
+/* ////////////////////// Loader  /////////////////////// */
 
+/* /////////////////Media Query /////////////////////////// */
+@media only screen and (max-width : 991px) {
+    .header .dropdownMenu2ul {
+        margin-left: -4.8rem;
+    }
+    .headerMainDiv {
+        margin: 22px auto;
+    }
+    .containerMain img, .mainContainer2 {
+        height: 80vh;
+    }
+    
+    .modal-dialog {
+        width: 90%;
+        margin: 3rem auto;
+    }
+}
+/* //=>OrderCard */
+@media only screen and (max-width : 767px) {
+    .orderCard .button,.button {
+        width: 100%;
+    }
+    .orderCard .card-body {
+        text-align: center;
+    }
+    .orderCard {
+        left: 8%;
+    }
+    .newItem {
+        border: none;
+    }
+    .carousel {
+        margin: 10px 0px;   
+    }
 }

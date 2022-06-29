@@ -1,29 +1,19 @@
-import 'react-app-polyfill/ie11';
-import 'react-app-polyfill/stable';
-
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
+import 'bootstrap/dist/css/bootstrap.css';
 
-import './services';
 
-import { Provider } from 'react-redux';
-import { ConfigProvider } from './contexts/ConfigContext';
-import { PersistGate } from 'redux-persist/integration/react';
-import './index.scss';
+import './index.css';
+import { App } from './App';
+//import Context
+import { StateProvider } from './context/StateProvider';
+import { initialState } from './context/initialState';
+import { reducer } from './context/reducer';
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    <StateProvider initialState={initialState} reducer={reducer}>
+        <App />
+    </StateProvider>
 
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { store, persister } from './store';
-
-ReactDOM.render(
-    <Provider store={store}>
-        <ConfigProvider>
-            <PersistGate loading={null} persistor={persister}>
-                <App />
-            </PersistGate>
-        </ConfigProvider>
-    </Provider>,
-    document.getElementById('root')
 );
 
-reportWebVitals();
