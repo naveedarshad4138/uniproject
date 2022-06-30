@@ -1,7 +1,7 @@
 <?php
 session_start();
-if(!$_SESSION['email']){
-	header("location:../../doctor_appointment/login.php");
+if(!$_SESSION['userid']){
+	header("location:../../doctor_appointment/doctors/login.php");
 }
 
 ?>

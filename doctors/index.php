@@ -27,7 +27,7 @@
                    
 
       ?>
-        <form action="../php/patient/profile.php" method="post">
+        <form action="../php/doctor/doctor_profile.php" method="post">
           <div class="input-group mb-3">
             <label class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user"></i></label>
             <input type="text" class="form-control" placeholder="Your name" name="name" value="<?php echo $row['name']; ?>" required >
@@ -42,7 +42,7 @@
           </div>
           <div class="input-group mb-3">
             <label class="input-group-text" for="inputGroupSelect01"><i class="fa-solid fa-id-card"></i></label>
-            <input type="text" class="form-control" aria-label="userid" name="userid"value="<?php echo $row['userid']; ?>">
+            <input type="text" class="form-control" aria-label="userid" name="userid"value="<?php echo $row['userid']; ?>" readonly>
             <label class="input-group-text" for="inputGroupSelect01"><i class="fa-solid fa-medal"></i></label>
             <input type="text" class="form-control" aria-label="expertise" name="expertise"value="<?php echo $row['expertise']; ?>">
           </div>
