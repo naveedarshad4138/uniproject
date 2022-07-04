@@ -6,13 +6,14 @@ export const Menu = () => {
     
     //get foodsitems from reducer
     const [{ foodItems, categoryItems }] = useStateValue();
-    const [filterCategory, setFilterCategory] = useState(null);
-    console.log(filterCategory)
+    const initialFilterValue = categoryItems && categoryItems[0].categoryName
+    const [filterCategory, setFilterCategory] = useState(initialFilterValue);
     const filterCategoryData = foodItems?.filter(n => n.category === filterCategory);
-
+    useEffect(() => {
+    }, [filterCategory]);
     useEffect(() => {
         setFilterCategory(categoryItems && categoryItems[0].categoryName)
-    }, [foodItems,filterCategory]);
+    }, [foodItems]);
     return (
         <div className='main_menu'>
             {

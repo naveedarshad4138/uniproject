@@ -55,11 +55,8 @@ export const CartItemModal = () => {
      //getToal Sum
      let totalSum = 0; 
      cartItems && cartItems?.map(n => { totalSum+=((parseInt(n.price) * parseInt(n.quantity)))})
-     console.log(totalSum)
     useEffect(() => {
-    
-     
-    }, [storageCartData]);
+    }, [cartItems,qty,storageCartData]);
     return (
         <div>
             {/* CartItem Modal Show */}
@@ -106,7 +103,7 @@ export const CartItemModal = () => {
                                                                                     <td>{title}
                                                                                     </td>
                                                                                     <td>
-                                                                                        <input type="number" id={itemId} defaultValue={quantity || 1} className="input-qty form-control text-center" style={{ "display": "block" }} onChange={onChange} width="10%"  min={1} />
+                                                                                        <input type="number" id={itemId} defaultValue={quantity ? quantity: 1} className="input-qty form-control text-center" style={{ "display": "block" }} onChange={onChange} width="10%"  min={1} />
                                                                                     </td>
                                                                                     <td className="price">$ {price * (quantity || 1)}</td>
                                                                                 </tr>
@@ -115,7 +112,7 @@ export const CartItemModal = () => {
                                                                     }
                                                                     <tr>
                                                                         <td colSpan="3" align="right">Total</td>
-                                                                        <td className="total" colSpan="2"><b>$ {totalSum} </b>
+                                                                        <td className="total" colSpan="1"><b>$ {totalSum} </b>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -124,7 +121,7 @@ export const CartItemModal = () => {
                                                     </div>
                                                 </div>
                                                  :
-                                                 <h1>Not data Yat</h1>
+                                                 <h1 className='text-center'>Not data Yat</h1>
                                          }
                                                  {/* <!-- End Cart --> */}
                                             </div>                                           

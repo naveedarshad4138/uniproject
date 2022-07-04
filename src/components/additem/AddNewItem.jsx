@@ -55,9 +55,7 @@ export const AddNewItem = () => {
   const SubmitDataHandler = async () => {
     setConditions({ isLoading: true })
     inputData.imageAsset = conditions.imageAsset;
-    //  console.log(inputData)
     try {
-      // inputData.imageAsset = conditions.imageAsset;
       inputData.itemId = `${Date.now()}`;
       await saveItem('foodItems', inputData);
       await setConditions({

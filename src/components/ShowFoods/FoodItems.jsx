@@ -15,12 +15,12 @@ export const FoodItems = (props) => {
     const [conditions, setConditions] = useState(initialState);
     //State for Checked Item
     const [selectedItem, setselectedItem] = useState(false);
-    const { title, imageAsset, calories, price, itemId, category } = props;
+    const { title, imageAsset, calories, price, itemId } = props;
+    const cartData = { title, imageAsset, calories, price, itemId,quantity:'1' };
     //Check cart item exits in localstorage or not
     const storageCartId = JSON.parse(localStorage.getItem('cartItems'));
     //=> ////////Add Cart data inlocalstorage check item exits or not in local storage /////////////
-    const addToCart = (title, imageAsset, calories, price, itemId) => {
-        const cartData = { title, imageAsset, calories, price, itemId };
+    const addToCart = (cartData) => {
         //=>Add Cart Data in localstorage 
         const addCartDataLocal = () => {
             const cartItemData = [...cartItems, cartData]
@@ -76,7 +76,7 @@ export const FoodItems = (props) => {
                 <div className="picCard">
                     <img className="itemPic" src={imageAsset} alt="fooItem" width="10%" />   
                 {  
-                      selectedItem ?<AiOutlineCheck className='cartPic' data-bs-toggle="tooltip" data-bs-placement="top" title="Item Added"  onClick={() => addToCart(title, imageAsset, calories, price, itemId)}/>:<AiOutlineShoppingCart className='cartPic' data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart" onClick={() => addToCart(title, imageAsset, calories, price, itemId)} />
+                      selectedItem ?<AiOutlineCheck className='cartPic' data-bs-toggle="tooltip" data-bs-placement="top" title="Item Added"  onClick={() => addToCart(cartData)}/>:<AiOutlineShoppingCart className='cartPic' data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart" onClick={() => addToCart(cartData)} />
                 }
                 </div>
                 <div className="main_card_body">
