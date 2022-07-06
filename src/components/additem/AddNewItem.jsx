@@ -9,10 +9,11 @@ import { Locader } from '../Locader';
 import { saveItem, fetchFoodItems, uploadImage, deleteUpload } from '../../utils/FirebseFunctions';
 import { AlertBox } from '../AlertBox';
 import { CategoryModal } from '../Modals/CategoryModal';
-
+import SelectSearch from 'react-select-search';
+import 'react-select-search/style.css'
 
 export const AddNewItem = () => {
- 
+
   const initialState = {
     fields: false,
     alertStatus: 'danger',
@@ -31,10 +32,9 @@ export const AddNewItem = () => {
   //ButtonDisabled Condition
   const buttonDisabledCondition = !inputData.title || !inputData.category || !inputData.calories || !inputData.price || !conditions.imageAsset;
   //All Foods Items from reducer State
-  const [{ foodItems,categoryItems}, dispatch] = useStateValue();
+  const [{ foodItems, categoryItems }, dispatch] = useStateValue();
   // => ////////////////////// CHangeFormValue ////////////////////
   const formValueChange = (e) => {
-
     const { value, id } = e.target;
     console.log(value)
     setInputData({ ...inputData, [id]: value })
@@ -57,7 +57,8 @@ export const AddNewItem = () => {
     inputData.imageAsset = conditions.imageAsset;
     try {
       inputData.itemId = `${Date.now()}`;
-      await saveItem('foodItems', inputData);
+      console.log(inputData)
+      // await saveItem('foodItems', inputData);
       await setConditions({
         imageAsset: "",
         fields: true,
@@ -125,20 +126,19 @@ export const AddNewItem = () => {
                 <div className="p-1">
                   <div className="input-group mb-4">
                     <span className='input-group-text'><GiOpenedFoodCan /></span>
-                    <input className="form-control" value={inputData.category} id='category' list="mylist" placeholder='Add Category' onChange={formValueChange} />
-                     {/* <!-- Button trigger modal --> */}
-                     <button type="button" class="btn button" data-bs-toggle="modal" data-bs-target="#staticBackdropCategory">
-                        +
-                      </button>
-                    <datalist id="mylist">
-                     
-                      
+                    <input className="form-control" value={inputData.category} list="mylist" placeholder='Add Category'  id="category"  onChange={formValueChange}/>
+                    <datalist id="mylist" onChange={formValueChange}>
                       {
                         categoryItems && categoryItems?.map(n => (
                           <option value={n.categoryName}>{n.categoryName}</option>
                         ))
                       }
                     </datalist>
+                    {/* <!-- Button trigger modal --> */}
+                    <button type="button" class="btn button" style={{ "z-index": "-1" }} data-bs-toggle="modal" data-bs-target="#staticBackdropCategory">
+                      +
+                    </button>
+                   
 
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export const AddNewItem = () => {
         </div>
       </div>
       {/* {Category Modal} */}
-      <CategoryModal setConditions= {setConditions} />
+      <CategoryModal setConditions={setConditions} />
     </div>
   )
 }

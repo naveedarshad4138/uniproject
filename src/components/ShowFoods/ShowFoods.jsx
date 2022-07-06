@@ -40,7 +40,7 @@ export const ShowFoods = (props) => {
                 <div className="col-sm-12 col-md-12 col-lg-12">
                     <h3>Our Fresh & Healthy Furits</h3>
                 </div>
-                {<Carousel className='carousel text-center' infinite={true}
+                {<Carousel className='carousel' infinite={true}
                     responsive={responsive} customTransition="all .5" transitionDuration={1000} showDots={true}
                     autoPlay={true}
                 >

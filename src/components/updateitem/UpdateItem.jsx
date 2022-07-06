@@ -142,9 +142,9 @@ export const UpdateItem = () => {
                 <div className="p-1">
                   <div className="input-group mb-4">
                     <span className='input-group-text'><GiOpenedFoodCan /></span>
-                    <input className="form-control" value={inputData.category} id='category' list="mylist" placeholder='Add Category' onChange={formValueChange} />
-                     {/* <!-- Button trigger modal --> */}
-                     <button type="button" class="btn button" data-bs-toggle="modal" data-bs-target="#staticBackdropCategory">
+                    <input className="form-control" value={inputData.category} id='category' list="mylist" placeholder='Add Category' onChange={formValueChange} readOnly/>
+                     {/* <!-- Button trigger modal Category --> */}
+                     {/* <button type="button" class="btn button" data-bs-toggle="modal" data-bs-target="#staticBackdropCategory">
                         +
                       </button>
                     <datalist id="mylist">
@@ -155,7 +155,7 @@ export const UpdateItem = () => {
                           <option value={n.categoryName}>{n.categoryName}</option>
                         ))
                       }
-                    </datalist>
+                    </datalist> */}
 
                   </div>
                 </div>

@@ -3,14 +3,11 @@ import { actionType } from "../context/reducer";
 import { firestore,storage } from "../firebase.config";
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 
-
 export const saveItem = async (table, data) => {
-  await setDoc(doc(firestore, table, `${Date.now()}`), data, {
+  await setDoc(doc(firestore, table, `${data.itemId}`), data, {
     merge: true
   })
 }
-
-
 
 ////////////////////// Upload Image on firebase ///////////////////////////////
 
@@ -72,7 +69,6 @@ export const deleteUpload = (conditions,setConditions) => {
     setTimeout(() => {
       setConditions({
         fields: '',
-
       })
     }, 4000);
   })
